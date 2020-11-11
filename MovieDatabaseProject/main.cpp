@@ -1,10 +1,40 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <vector>
+
+#include "actor.h"
+#include "picture.h"
 
 using namespace std;
+
+void readFileToActor(ifstream& file, vector<actor>& actorList) {
+
+
+
+}
+
+void readFileToPicture(ifstream& file, vector<picture>& pictureList) {
+
+
+
+
+}
+
 int main()
 {
+    ifstream actorFile("actor-actress.csv");
+    ifstream pictureFile("pictures.csv");
+
+    vector<actor> actorList;
+    vector<picture> pictureList;
+
+    readFileToActor(actorFile, actorList);
+    readFileToPicture(pictureFile, pictureList);
+
+
+
+
     ifstream infile("actor-actress.csv");
     string header,year,award, winner, name, film;
     int records = 0;
