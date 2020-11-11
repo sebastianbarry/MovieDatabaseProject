@@ -5,7 +5,7 @@
 
 #include "actor.h"
 #include "picture.h"
-
+asdvoinqpvuqenrpiuvn
 using namespace std;
 
 void readFileToActor(ifstream& file, vector<actor>& actorList) {
@@ -17,7 +17,7 @@ void readFileToActor(ifstream& file, vector<actor>& actorList) {
 void readFileToPicture(ifstream& file, vector<picture>& pictureList) {
 
 
-
+    
 
 }
 
