@@ -1,0 +1,7 @@
+# ninja log v5
+4	556	626860630	CMakeFiles/MovieDatabaseProject.dir/actor.cpp.obj	2a90b76f91f711a6
+7	556	626860630	CMakeFiles/MovieDatabaseProject.dir/picture.cpp.obj	18a4ead2ea46a0b
+1	1059	626860630	CMakeFiles/MovieDatabaseProject.dir/main.cpp.obj	679a9259a07bfd98
+1059	1452	626860631	MovieDatabaseProject.exe	c4342a211b977034
+0	1152	626860818	CMakeFiles/MovieDatabaseProject.dir/main.cpp.obj	679a9259a07bfd98
+1152	1326	626860819	MovieDatabaseProject.exe	c4342a211b977034

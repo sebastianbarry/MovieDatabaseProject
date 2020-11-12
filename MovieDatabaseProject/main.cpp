@@ -4,6 +4,7 @@
 #include <vector>
 #include <sstream>
 #include <windows.h>
+#include <algorithm>
 #include "actor.h"
 #include "picture.h"
 
@@ -20,14 +21,71 @@ void readFileToPicture(ifstream& file, vector<picture>& pictureList) { // Elias 
 
 char getinput(char inputList[], int numberOfOptions); // also prototyped your function. These can be found at bottom of main.cpp
 
-void exploreDatabase() {
+void addActorToDatabase(vector<actor>& actorList) {
+    int tempYear;
+    string tempAward, tempName, tempFilm;
+    bool tempWinner;
+    cout << "Enter Year:" << endl;
+    cin >> tempYear;
+    cout << "Enter Award:" << endl;
+    cin >> tempAward;
+    cout << "Enter Winner:" << endl;
+    cin >> tempWinner;
+    cout << "Enter Name:" << endl;
+    cin >> tempName;
+    cout << "Enter Film:" << endl;
+    cin >> tempFilm;
 
+    actor tempActor(tempYear, tempAward, tempWinner, tempName, tempFilm);
+    actorList.push_back(tempActor);
+
+    cout << "Record added to the Actor/Actress database!" << endl;
+    cout << tempActor.getYear() << "\t" << tempActor.getAward() << "\t" << tempActor.getWinner() << "\t" << tempActor.getName() << "\t" << tempActor.getFilm() << endl;
+}
+
+void displayActorDatabase(vector<actor> actorList) {
+    cout << "Year\tAward\tWinner\tName\tFilm" << endl;
+    for (actor elem : actorList) {
+        cout << elem.getYear() << "\t" << elem.getAward() << "\t" << elem.getWinner() << "\t" << elem.getName() << "\t" << elem.getFilm() << endl;
+    }
+    cout << endl;
+}
+
+bool sortActorYearAscending(actor lhs, actor rhs) {
+    return lhs.getYear() > rhs.getYear();
+}
+
+void sortActorDatabase(vector<actor>& actorList) {
+    char sortcategory, sortorder;
+    char categoryInputs[] = { 'y', 'a', 'w', 'n', 'f' };
+    char adInputs[] = { 'a', 'd' };
+    
+
+    cout << "What category would you like to sort by?" << endl;
+    sortcategory = getinput(categoryInputs, 5);
+
+    cout << "Ascending or descending?" << endl;
+    sortorder = getinput(adInputs, 2);
+    
+    
+    //sort(actorList.begin(), actorList.end());
+
+    if (sortorder == 'a')
+    {
+        if (sortcategory == 'y')
+            sort(actorList.begin(), actorList.end(), sortActorYearAscending);
+
+    }
+    else if (sortorder == 'd')
+    {
+
+    }
 }
 
 int main()
 {
     system("color a");
-    ifstream actorFile(R"(C:\ClionProjects\MovieDatabaseProject\MovieDatabaseProject\actor-actress.csv)"); // CHANGE TO FILE PATH OF YOUR COMPUTER
+    ifstream actorFile(R"(C:\Users\sebba\source\repos\MovieDatabaseProject\MovieDatabaseProject\actor-actress.csv)"); // CHANGE TO FILE PATH OF YOUR COMPUTER
     ifstream pictureFile("pictures.csv"); // CHANGE TO FILE PATH OF YOUR COMPUTER
 
     vector<actor> actorList; //vector for actor/actress data
@@ -49,7 +107,7 @@ int main()
         cin.get();
 
 
-        cout << "Which database (Actor or Pictures) would you like to enter?" << endl;
+        cout << "Which database (Actor or Pictures) would you like to access?" << endl;
         input = getinput(dbInputs, 2);
         switch (input)
         {
@@ -64,12 +122,12 @@ int main()
                 {
                     cout << "What action would you like to perform?" << endl;
                     cout << "View\tSearch\tSort\tAdd\t\t[Exit]" << endl;
-                    input = getinput(actionInputs, 4);
+                    input = getinput(actionInputs, 5);
                     switch (input)
                     {
                                                                         // VIEW ACTORS ACTION
                     case 'v':
-                      //  displayDatabase(actorList);
+                        displayActorDatabase(actorList);
                         break;
                                                                         // SEARCH ACTORS ACTION
                     case 's':
@@ -77,45 +135,30 @@ int main()
                         break;
                                                                         // SORT ACTORS ACTION
                     case 't':
-
+                        sortActorDatabase(actorList);
                         break;
                                                                         // ADD ACTORS ACTION
                     case 'a':
                         cout << "Create an Actor/Actress record:" << endl;
-
-                        int tempYear;
-                        string tempAward, tempName, tempFilm;
-                        bool tempWinner;
-                        cout << "Enter Year:" << endl;
-                        cin >> tempYear;
-                        cout << "Enter Award:" << endl;
-                        cin >> tempAward;
-                        cout << "Enter Winner:" << endl;
-                        cin >> tempWinner;
-                        cout << "Enter Name:" << endl;
-                        cin >> tempName;
-                        cout << "Enter Film:" << endl;
-                        cin >> tempFilm;
-
-                        actor tempActor(tempYear, tempAward, tempWinner, tempName, tempFilm);
-                        actorList.push_back(tempActor);
-
-                        cout << "Record added to the Actor/Actress database!" << endl;
-                        cout << tempActor.getYear() << "\t" << tempActor.getAward() << "\t" << tempActor.getWinner() << "\t" << tempActor.getName() << "\t" << tempActor.getFilm() << endl;
+                        addActorToDatabase(actorList);
                         break;
                                                                         // EXIT ACTORS ACTION
-          //         case 'x':      commented out by Elias Due to Compiling Error
+                    case 'x':
                         break;
-          //          default:      commented out by Elias Due to Compiling Error
+                    default:
                         throw "Unexpected input";
                         break;
                     }
+
+                    cout << "What action would you like to perform?" << endl;
+                    cout << "View\tSearch\tSort\tAdd\t\t[Exit]" << endl;
+                    input = getinput(actionInputs, 5);
                 } while (input != 'x');
                                                                         // END OF ACTORS ACTIONS 
 
-                cout << "Would you like to remain in the Actor Database?" << endl;
+                cout << "Would you like to return to the main menu?" << endl;
                 input = getinput(ynInputs, 2);
-            } while (input == 'y');
+            } while (input == 'n');
             break;
 // PICTURES DATABASE LOOP // PICTURES DATABASE LOOP // PICTURES DATABASE LOOP // PICTURES DATABASE LOOP // PICTURES DATABASE LOOP // PICTURES DATABASE LOOP // PICTURES DATABASE LOOP 
         case 'p':                           
@@ -127,9 +170,9 @@ int main()
                 cout << "View\tSearch\tSort\tAdd\t\t[Exit]" << endl;
                 input = getinput(actionInputs, 4);
 
-                cout << "Would you like to remain in the Pictures Database?" << endl;
+                cout << "Would you like to go to the main menu?" << endl;
                 input = getinput(ynInputs, 2);
-            } while (input == 'y');
+            } while (input == 'n');
             break;
         default:
             throw "Unexpected input";
@@ -137,9 +180,9 @@ int main()
         }
 // END OF LOOPS // END OF LOOPS // END OF LOOPS // END OF LOOPS // END OF LOOPS // END OF LOOPS // END OF LOOPS // END OF LOOPS // END OF LOOPS // END OF LOOPS 
 
-        cout << "Would you like to return to the main menu?" << endl;
+        cout << "Would you like to exit the program?" << endl;
         input = getinput(ynInputs, 2);
-    } while (input == 'y');
+    } while (input == 'n');
 
     cout << "Exiting program . . ." << endl;
     system("pause");
@@ -207,7 +250,7 @@ void readFileToActor(ifstream& file, vector<actor>& actorList) {
     Sleep(1000);
     cout << " . . . " << endl;
     Sleep(1000);
-    cout << "Records: "<<records << endl;
+    cout << "Records: "<< records << endl;
     cout << endl; cout << endl;
 
 
