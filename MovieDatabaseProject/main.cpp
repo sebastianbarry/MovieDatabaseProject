@@ -52,8 +52,68 @@ void displayActorDatabase(vector<actor> actorList) {
 }
 
 bool sortActorYearAscending(actor lhs, actor rhs) {
+    if (lhs.getYear() == rhs.getYear())
+    {
+        return lhs.getName() < rhs.getName();
+    }
+    return lhs.getYear() < rhs.getYear();
+}
+
+bool sortActorYearDescending(actor lhs, actor rhs) {
+    if (lhs.getYear() == rhs.getYear())
+    {
+        return lhs.getName() < rhs.getName();
+    }
     return lhs.getYear() > rhs.getYear();
 }
+
+bool sortActorAwardAscending(actor lhs, actor rhs) {
+    if (lhs.getAward() == rhs.getAward())
+    {
+        return lhs.getName() < rhs.getName();
+    }
+    return lhs.getAward() < rhs.getAward();
+}
+
+bool sortActorAwardDescending(actor lhs, actor rhs) {
+    if (lhs.getAward() == rhs.getAward())
+    {
+        return lhs.getName() < rhs.getName();
+    }
+    return lhs.getAward() > rhs.getAward();
+}
+
+bool sortActorWinnerAscending(actor lhs, actor rhs) {
+    if (lhs.getWinner() == rhs.getWinner())
+    {
+        return lhs.getName() < rhs.getName();
+    }
+    return lhs.getWinner() < rhs.getWinner();
+}
+
+bool sortActorWinnerDescending(actor lhs, actor rhs) {
+    if (lhs.getWinner() == rhs.getWinner())
+    {
+        return lhs.getName() < rhs.getName();
+    }
+    return lhs.getWinner() > rhs.getWinner();
+}
+
+bool sortActorNameAscending(actor lhs, actor rhs) {
+    if (lhs.getName().compare)
+    
+    return lhs.getWinner() < rhs.getWinner();
+}
+
+bool sortActorNameDescending(actor lhs, actor rhs) {
+    if (lhs.getWinner() == rhs.getWinner())
+    {
+        return lhs.getName() < rhs.getName();
+    }
+    return lhs.getWinner() > rhs.getWinner();
+}
+
+
 
 void sortActorDatabase(vector<actor>& actorList) {
     char sortcategory, sortorder;
@@ -74,7 +134,7 @@ void sortActorDatabase(vector<actor>& actorList) {
     {
         if (sortcategory == 'y')
             sort(actorList.begin(), actorList.end(), sortActorYearAscending);
-
+                                                                                    // still need to implement the sort functions i made into this if/else chunk
     }
     else if (sortorder == 'd')
     {
@@ -150,9 +210,9 @@ int main()
                         break;
                     }
 
-                    cout << "What action would you like to perform?" << endl;
-                    cout << "View\tSearch\tSort\tAdd\t\t[Exit]" << endl;
-                    input = getinput(actionInputs, 5);
+                    //cout << "What action would you like to perform?" << endl;
+                    //cout << "View\tSearch\tSort\tAdd\t\t[Exit]" << endl;
+                    //input = getinput(actionInputs, 5);
                 } while (input != 'x');
                                                                         // END OF ACTORS ACTIONS 
 
