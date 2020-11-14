@@ -46,10 +46,26 @@ void displayActorDatabase(vector<actor> actorList) {
     cout << endl;
 }
 
+bool sortActorNameAscending(actor lhs, actor rhs) {
+    int compare = lhs.getName().compare(rhs.getName());
+    if (compare < 0)
+        return true;
+    else
+        return false;
+}
+
+bool sortActorNameDescending(actor lhs, actor rhs) {
+    int compare = lhs.getName().compare(rhs.getName());
+    if (compare > 0)
+        return true;
+    else
+        return false;
+}
+
 bool sortActorYearAscending(actor lhs, actor rhs) {
     if (lhs.getYear() == rhs.getYear())
     {
-        return lhs.getName() < rhs.getName();
+        return sortActorNameAscending(lhs, rhs);
     }
     return lhs.getYear() < rhs.getYear();
 }
@@ -57,31 +73,31 @@ bool sortActorYearAscending(actor lhs, actor rhs) {
 bool sortActorYearDescending(actor lhs, actor rhs) {
     if (lhs.getYear() == rhs.getYear())
     {
-        return lhs.getName() < rhs.getName();
+        return sortActorNameAscending(lhs, rhs);
     }
     return lhs.getYear() > rhs.getYear();
 }
 
 bool sortActorAwardAscending(actor lhs, actor rhs) {
-    if (lhs.getAward() == rhs.getAward())
-    {
-        return lhs.getName() < rhs.getName();
-    }
-    return lhs.getAward() < rhs.getAward();
+    int compare = lhs.getAward().compare(rhs.getAward());
+    if (compare < 0)
+        return true;
+    else
+        return false;
 }
 
 bool sortActorAwardDescending(actor lhs, actor rhs) {
-    if (lhs.getAward() == rhs.getAward())
-    {
-        return lhs.getName() < rhs.getName();
-    }
-    return lhs.getAward() > rhs.getAward();
+    int compare = lhs.getAward().compare(rhs.getAward());
+    if (compare > 0)
+        return true;
+    else
+        return false;
 }
 
 bool sortActorWinnerAscending(actor lhs, actor rhs) {
     if (lhs.getWinner() == rhs.getWinner())
     {
-        return lhs.getName() < rhs.getName();
+        return sortActorNameAscending(lhs, rhs);
     }
     return lhs.getWinner() < rhs.getWinner();
 }
@@ -89,23 +105,25 @@ bool sortActorWinnerAscending(actor lhs, actor rhs) {
 bool sortActorWinnerDescending(actor lhs, actor rhs) {
     if (lhs.getWinner() == rhs.getWinner())
     {
-        return lhs.getName() < rhs.getName();
+        return sortActorNameAscending(lhs, rhs);
     }
     return lhs.getWinner() > rhs.getWinner();
 }
 
-bool sortActorNameAscending(actor lhs, actor rhs) {
-  //  if (lhs.getName().compare)                   ***COMMENTED OUT DUE TO COMPILE ERROR***
-    
-    return lhs.getWinner() < rhs.getWinner();
+bool sortActorFilmAscending(actor lhs, actor rhs) {
+    int compare = lhs.getFilm().compare(rhs.getFilm());
+    if (compare < 0)
+        return true;
+    else
+        return false;
 }
 
-bool sortActorNameDescending(actor lhs, actor rhs) {
-    if (lhs.getWinner() == rhs.getWinner())
-    {
-        return lhs.getName() < rhs.getName();
-    }
-    return lhs.getWinner() > rhs.getWinner();
+bool sortActorFilmDescending(actor lhs, actor rhs) {
+    int compare = lhs.getFilm().compare(rhs.getFilm());
+    if (compare > 0)
+        return true;
+    else
+        return false;
 }
 
 
@@ -129,19 +147,41 @@ void sortActorDatabase(vector<actor>& actorList) {
     {
         if (sortcategory == 'y')
             sort(actorList.begin(), actorList.end(), sortActorYearAscending);
-                                                                                    // still need to implement the sort functions i made into this if/else chunk
+        else if (sortcategory == 'a')
+            sort(actorList.begin(), actorList.end(), sortActorAwardAscending);
+        else if (sortcategory == 'w')
+            sort(actorList.begin(), actorList.end(), sortActorWinnerAscending);
+        else if (sortcategory == 'n')
+            sort(actorList.begin(), actorList.end(), sortActorNameAscending);
+        else if (sortcategory == 'f')
+            sort(actorList.begin(), actorList.end(), sortActorFilmAscending);
     }
     else if (sortorder == 'd')
     {
-
+        if (sortcategory == 'y')
+            sort(actorList.begin(), actorList.end(), sortActorYearDescending);
+        else if (sortcategory == 'a')
+            sort(actorList.begin(), actorList.end(), sortActorAwardDescending);
+        else if (sortcategory == 'w')
+            sort(actorList.begin(), actorList.end(), sortActorWinnerDescending);
+        else if (sortcategory == 'n')
+            sort(actorList.begin(), actorList.end(), sortActorNameDescending);
+        else if (sortcategory == 'f')
+            sort(actorList.begin(), actorList.end(), sortActorFilmDescending);
     }
+
+    cout << "Database sorted!" << endl;
 }
 
 int main()
 {
     system("color a");
-    ifstream actorFile(R"(C:\ClionProjects\MovieDatabaseProject\MovieDatabaseProject\actor-actress.csv)"); // CHANGE TO FILE PATH OF YOUR COMPUTER
-    ifstream pictureFile(R"(C:\ClionProjects\MovieDatabaseProject\MovieDatabaseProject\pictures.csv)"); // CHANGE TO FILE PATH OF YOUR COMPUTER
+    //ELIAS FILE
+    //ifstream actorFile(R"(C:\ClionProjects\MovieDatabaseProject\MovieDatabaseProject\actor-actress.csv)");
+    //ifstream pictureFile(R"(C:\ClionProjects\MovieDatabaseProject\MovieDatabaseProject\pictures.csv)");
+    //SEBASTIAN FILE
+    ifstream actorFile(R"(C:\Users\sebba\source\repos\MovieDatabaseProject\MovieDatabaseProject\actor-actress.csv)");
+    ifstream pictureFile(R"(C:\Users\sebba\source\repos\MovieDatabaseProject\MovieDatabaseProject\pictures.csv)");
 
     vector<actor> actorList; //vector for actor/actress data
     vector<picture> pictureList; // vector for picture data
