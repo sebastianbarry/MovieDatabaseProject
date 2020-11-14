@@ -12,14 +12,9 @@ using namespace std;
 
 void readFileToActor(ifstream& file, vector<actor>& actorList); // I prototyped these functions for neatness lol
 
-void readFileToPicture(ifstream& file, vector<picture>& pictureList) { // Elias Still Needs to finish this function
+void readFileToPicture(ifstream& file, vector<picture>& pictureList);
 
-
-    
-
-}
-
-char getinput(char inputList[], int numberOfOptions); // also prototyped your function. These can be found at bottom of main.cpp
+char getInput(char inputList[], int numberOfOptions); // also prototyped your function. These can be found at bottom of main.cpp
 
 void addActorToDatabase(vector<actor>& actorList) {
     int tempYear;
@@ -100,7 +95,7 @@ bool sortActorWinnerDescending(actor lhs, actor rhs) {
 }
 
 bool sortActorNameAscending(actor lhs, actor rhs) {
-    if (lhs.getName().compare)
+  //  if (lhs.getName().compare)                   ***COMMENTED OUT DUE TO COMPILE ERROR***
     
     return lhs.getWinner() < rhs.getWinner();
 }
@@ -122,10 +117,10 @@ void sortActorDatabase(vector<actor>& actorList) {
     
 
     cout << "What category would you like to sort by?" << endl;
-    sortcategory = getinput(categoryInputs, 5);
+    sortcategory = getInput(categoryInputs, 5);
 
     cout << "Ascending or descending?" << endl;
-    sortorder = getinput(adInputs, 2);
+    sortorder = getInput(adInputs, 2);
     
     
     //sort(actorList.begin(), actorList.end());
@@ -145,8 +140,8 @@ void sortActorDatabase(vector<actor>& actorList) {
 int main()
 {
     system("color a");
-    ifstream actorFile(R"(C:\Users\sebba\source\repos\MovieDatabaseProject\MovieDatabaseProject\actor-actress.csv)"); // CHANGE TO FILE PATH OF YOUR COMPUTER
-    ifstream pictureFile("pictures.csv"); // CHANGE TO FILE PATH OF YOUR COMPUTER
+    ifstream actorFile(R"(C:\ClionProjects\MovieDatabaseProject\MovieDatabaseProject\actor-actress.csv)"); // CHANGE TO FILE PATH OF YOUR COMPUTER
+    ifstream pictureFile(R"(C:\ClionProjects\MovieDatabaseProject\MovieDatabaseProject\pictures.csv)"); // CHANGE TO FILE PATH OF YOUR COMPUTER
 
     vector<actor> actorList; //vector for actor/actress data
     vector<picture> pictureList; // vector for picture data
@@ -168,7 +163,7 @@ int main()
 
 
         cout << "Which database (Actor or Pictures) would you like to access?" << endl;
-        input = getinput(dbInputs, 2);
+        input = getInput(dbInputs, 2);
         switch (input)
         {
 // ACTORS DATABASE LOOP // ACTORS DATABASE LOOP // ACTORS DATABASE LOOP // ACTORS DATABASE LOOP // ACTORS DATABASE LOOP // ACTORS DATABASE LOOP // ACTORS DATABASE LOOP 
@@ -182,7 +177,7 @@ int main()
                 {
                     cout << "What action would you like to perform?" << endl;
                     cout << "View\tSearch\tSort\tAdd\t\t[Exit]" << endl;
-                    input = getinput(actionInputs, 5);
+                    input = getInput(actionInputs, 5);
                     switch (input)
                     {
                                                                         // VIEW ACTORS ACTION
@@ -217,7 +212,7 @@ int main()
                                                                         // END OF ACTORS ACTIONS 
 
                 cout << "Would you like to return to the main menu?" << endl;
-                input = getinput(ynInputs, 2);
+                input = getInput(ynInputs, 2);
             } while (input == 'n');
             break;
 // PICTURES DATABASE LOOP // PICTURES DATABASE LOOP // PICTURES DATABASE LOOP // PICTURES DATABASE LOOP // PICTURES DATABASE LOOP // PICTURES DATABASE LOOP // PICTURES DATABASE LOOP 
@@ -228,10 +223,10 @@ int main()
 
                 cout << "What action would you like to perform?" << endl;
                 cout << "View\tSearch\tSort\tAdd\t\t[Exit]" << endl;
-                input = getinput(actionInputs, 4);
+                input = getInput(actionInputs, 4);
 
                 cout << "Would you like to go to the main menu?" << endl;
-                input = getinput(ynInputs, 2);
+                input = getInput(ynInputs, 2);
             } while (input == 'n');
             break;
         default:
@@ -241,7 +236,7 @@ int main()
 // END OF LOOPS // END OF LOOPS // END OF LOOPS // END OF LOOPS // END OF LOOPS // END OF LOOPS // END OF LOOPS // END OF LOOPS // END OF LOOPS // END OF LOOPS 
 
         cout << "Would you like to exit the program?" << endl;
-        input = getinput(ynInputs, 2);
+        input = getInput(ynInputs, 2);
     } while (input == 'n');
 
     cout << "Exiting program . . ." << endl;
@@ -252,23 +247,95 @@ int main()
 
 
 
-
-void readFileToActor(ifstream& file, vector<actor>& actorList) {
-
-    // stringstream ss; // I was messing with streamstring
-    //   string actorObjectName = "actor"; // streamstring
+void readFileToPicture(ifstream& file, vector<picture>& pictureList) {   /*   *** FUNCTION GIVING STOI ERROR***
     if (file.is_open()) { //Checks if the csv file opens or not
         cout <<"\n" << "Successfully Opened The Actor/Actress CSV file!" << endl << "\n";
     } else {
         cout <<"\n" << "Error Opening Actor/Actress CSV file" << endl << "\n";
+        cout << "\n" << "Please Make Sure CSV File Path Is Correct" << endl << "\n";
+        exit(0);
     }
+    string header, name, year, nominations, rating, duration, genre1, genre2, release, metacritic, synopsis;
+    int records = 0;
+    getline(file, header);
+    while (file.good()) {
+        picture pictureInstance; //picture instance is to feed into vector
+
+        getline(file,name,',');
+        pictureInstance.setName(name);
+
+        getline(file,year,',');
+        int yearConverted;
+        yearConverted = stoi(year); //converts the string to int type
+        pictureInstance.setYear(yearConverted);
+
+        getline(file,nominations,',');
+        int nominationsConverted;
+        nominationsConverted = stoi(nominations); //converts the string to int type
+        pictureInstance.setNominations(nominationsConverted);
+
+        getline(file,rating,',');
+        double ratingConverted;
+        ratingConverted = stod(rating); //converts the string to int type
+        pictureInstance.setRating(ratingConverted);
+
+        getline(file,duration,',');
+        int durationConverted;
+        durationConverted = stoi(duration); //converts the string to int type
+        pictureInstance.setDuration(durationConverted);
+
+        getline(file,genre1,',');
+        pictureInstance.setGenre1(genre1);
+
+        getline(file,genre2,',');
+        pictureInstance.setGenre2(genre2);
+
+        getline(file,release,',');
+        pictureInstance.setRelease(release);
+
+        getline(file,metacritic,',');
+        int metacriticConversion;
+        metacriticConversion = stoi(metacritic); //converts the string to int type
+        pictureInstance.setMetacritic(metacriticConversion);
+
+        getline(file,synopsis,',');
+        pictureInstance.setRelease(synopsis);
+
+        pictureList.push_back(pictureInstance);
+        records++;
+
+    }
+    cout << "Loading All Records" << endl;
+    cout << " . . . " << endl;
+    Sleep(1000);
+    cout << " . . . " << endl;
+    Sleep(1000);
+    cout << " . . . " << endl;
+    Sleep(1000);
+    cout << "Records: "<< records << endl;
+    cout << endl; cout << endl;
+
+*/
+}
+
+
+
+void readFileToActor(ifstream& file, vector<actor>& actorList) {
+
+    if (file.is_open()) { //Checks if the csv file opens or not
+        cout <<"\n" << "Successfully Opened The Actor/Actress CSV file!" << endl << "\n";
+    } else {
+        cout <<"\n" << "Error Opening Actor/Actress CSV file" << endl << "\n";
+        cout << "\n" << "Please Make Sure CSV File Path Is Correct" << endl << "\n";
+        exit(0);
+    }
+
 
     string header,year,award, winner, name, film; // strings that hold the value of csv contents
     int records = 0; // records iterator
     getline(file, header); // this skips the first line of the csv file
     while (file.good()) // loop until eof
     {
-        //   ss << actorObjectName << records; // stream string
         actor actorInstance;  // actor instance is made to set string hold values to
 
         getline(file, year, ','); // gets year from csv
@@ -299,7 +366,6 @@ void readFileToActor(ifstream& file, vector<actor>& actorList) {
 
 
         records++;
-        // ss.str(""); // streamstring
 
     }
 
@@ -318,7 +384,7 @@ void readFileToActor(ifstream& file, vector<actor>& actorList) {
 }
 
 
-char getinput(char inputList[], int numberOfOptions) {			//takes in an array of different possible inputs, receives user input, tests it, and returns the index of the chosen input
+char getInput(char inputList[], int numberOfOptions) {			//takes in an array of different possible inputs, receives user input, tests it, and returns the index of the chosen input
     char input;
     for (int i = 0; i < numberOfOptions; i++)
     {
@@ -335,5 +401,5 @@ char getinput(char inputList[], int numberOfOptions) {			//takes in an array of 
             return input;
     }
     cout << "Invalid input, please try again" << endl;	// if invalid input, try again
-    return getinput(inputList, numberOfOptions);
+    return getInput(inputList, numberOfOptions);
 }
