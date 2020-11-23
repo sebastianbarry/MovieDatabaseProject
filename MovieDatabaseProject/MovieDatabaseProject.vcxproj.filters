@@ -32,12 +32,18 @@
     <ClCompile Include="picture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="sortfunctions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="actor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="picture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sortfunctions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

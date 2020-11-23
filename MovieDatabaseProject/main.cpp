@@ -40,9 +40,13 @@ void sortActorDatabase(vector<actor>& actorList);
 int main()
 {
     system("color a");
+
+    //ELIAS LENOVO LAPTOP FILE
+    ifstream actorFile(R"(C:\Users\elipe\source\repos\sebastianbarry\MovieDatabaseProject\MovieDatabaseProject\actor-actress.csv)");
+    ifstream pictureFile(R"(C:\Users\elipe\source\repos\sebastianbarry\MovieDatabaseProject\MovieDatabaseProject\picture.csv)");
     //ELIAS FILE
-    ifstream actorFile(R"(C:\ClionProjects\MovieDatabaseProject\MovieDatabaseProject\actor-actress.csv)");
-    ifstream pictureFile(R"(C:\ClionProjects\MovieDatabaseProject\MovieDatabaseProject\pictures.csv)");
+   // ifstream actorFile(R"(C:\ClionProjects\MovieDatabaseProject\MovieDatabaseProject\actor-actress.csv)");
+   // ifstream pictureFile(R"(C:\ClionProjects\MovieDatabaseProject\MovieDatabaseProject\pictures.csv)");
     //SEBASTIAN FILE
     //ifstream actorFile(R"(C:\Users\sebba\source\repos\MovieDatabaseProject\MovieDatabaseProject\actor-actress.csv)");
     //ifstream pictureFile(R"(C:\Users\sebba\source\repos\MovieDatabaseProject\MovieDatabaseProject\pictures.csv)");
