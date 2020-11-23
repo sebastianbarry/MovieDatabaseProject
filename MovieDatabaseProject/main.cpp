@@ -18,89 +18,24 @@
 
 using namespace std;
 
-void readFileToActor(ifstream& file, vector<actor>& actorList); // I prototyped these functions for neatness lol
+
+
+void readFileToActor(ifstream& file, vector<actor>& actorList);
 
 void readFileToPicture(ifstream& file, vector<picture>& pictureList);
 
-char getInput(char inputList[], int numberOfOptions); // also prototyped your function. These can be found at bottom of main.cpp
+char getInput(char inputList[], int numberOfOptions);
 
-void addActorToDatabase(vector<actor>& actorList) {
-    int tempYear;
-    string tempAward, tempName, tempFilm;
-    bool tempWinner;
-    cout << "Enter Year:" << endl;
-    cin >> tempYear;
-    cout << "Enter Award:" << endl;
-    cin >> tempAward;
-    cout << "Enter Winner:" << endl;
-    cin >> tempWinner;
-    cout << "Enter Name:" << endl;
-    cin >> tempName;
-    cout << "Enter Film:" << endl;
-    cin >> tempFilm;
+void addActorToDatabase(vector<actor>& actorList);
 
-    actor tempActor(tempYear, tempAward, tempWinner, tempName, tempFilm);
-    actorList.push_back(tempActor);
+void displayActorDatabase(vector<actor> actorList);
 
-    cout << "Record added to the Actor/Actress database!" << endl;
-    cout << tempActor.getYear() << "\t" << tempActor.getAward() << "\t" << tempActor.getWinner() << "\t" << tempActor.getName() << "\t" << tempActor.getFilm() << endl;
-}
+void displayPictureDatabase(vector<picture> pictureList);
 
-void displayActorDatabase(vector<actor> actorList) {
-    cout << "Year\tAward\tWinner\tName\tFilm" << endl;
-    for (actor elem : actorList) {
-        cout << elem.getYear() << "\t" << elem.getAward() << "\t" << elem.getWinner() << "\t" << elem.getName() << "\t" << elem.getFilm() << endl;
-    }
-    cout << endl;
-}
+void sortActorDatabase(vector<actor>& actorList);
 
 
 
-
-void sortActorDatabase(vector<actor>& actorList) {
-    char sortcategory, sortorder;
-    char categoryInputs[] = { 'y', 'a', 'w', 'n', 'f' };
-    char adInputs[] = { 'a', 'd' };
-    
-
-    cout << "What category would you like to sort by?" << endl;
-    sortcategory = getInput(categoryInputs, 5);
-
-    cout << "Ascending or descending?" << endl;
-    sortorder = getInput(adInputs, 2);
-    
-    
-    //sort(actorList.begin(), actorList.end());
-
-    if (sortorder == 'a')
-    {
-        if (sortcategory == 'y')
-            sort(actorList.begin(), actorList.end(), sortActorYearAscending);
-        else if (sortcategory == 'a')
-            sort(actorList.begin(), actorList.end(), sortActorAwardAscending);
-        else if (sortcategory == 'w')
-            sort(actorList.begin(), actorList.end(), sortActorWinnerAscending);
-        else if (sortcategory == 'n')
-            sort(actorList.begin(), actorList.end(), sortActorNameAscending);
-        else if (sortcategory == 'f')
-            sort(actorList.begin(), actorList.end(), sortActorFilmAscending);
-    }
-    else if (sortorder == 'd')
-    {
-        if (sortcategory == 'y')
-            sort(actorList.begin(), actorList.end(), sortActorYearDescending);
-        else if (sortcategory == 'a')
-            sort(actorList.begin(), actorList.end(), sortActorAwardDescending);
-        else if (sortcategory == 'w')
-            sort(actorList.begin(), actorList.end(), sortActorWinnerDescending);
-        else if (sortcategory == 'n')
-            sort(actorList.begin(), actorList.end(), sortActorNameDescending);
-        else if (sortcategory == 'f')
-            sort(actorList.begin(), actorList.end(), sortActorFilmDescending);
-    }
-
-    cout << "Database sorted!" << endl;
-}
 
 int main()
 {
@@ -190,6 +125,7 @@ int main()
             do
             {
                 readFileToPicture(pictureFile, pictureList); // reads in picture database when user choses to search it
+
                 cout << endl << "------------------\nPictures Database\n------------------" << endl;
 
                 cout << "What action would you like to perform?" << endl;
@@ -198,6 +134,17 @@ int main()
 
                 cout << "Would you like to go to the main menu?" << endl;
                 input = getInput(ynInputs, 2);
+
+       //         switch(input) {
+       //             case 'v':
+       //                 displayPictureDatabase(pictureList);
+       //                 break;
+        //            default:
+         //               throw "Unexpected input";
+          //              break;
+          //      }
+
+
             } while (input == 'n');
             break;
         default:
@@ -225,7 +172,7 @@ bool isNumerical(const string& str){ //function to check if string value is a nu
 }
 
 
-void readFileToPicture(ifstream& file, vector<picture>& pictureList) {
+void readFileToPicture(ifstream& file, vector<picture>& pictureList) { // this reads CSV file into vector
 
     if (file.is_open()) { //Checks if the csv file opens or not
         cout <<"\n" << "Successfully Opened The Pictures CSV File!" << endl << "\n";
@@ -281,13 +228,10 @@ void readFileToPicture(ifstream& file, vector<picture>& pictureList) {
 
             getline(ss,rating,',');
 
-            if(isNumerical(rating)) {
+
                 double ratingConverted = stod(rating);
                 pictureInstance.setRating(ratingConverted);
-            }
-            else {
-                pictureInstance.setRating(0.0);
-            }
+
             getline(ss,duration,',');
             if(isNumerical(duration)) {
                 int durationConverted = stoi(duration);
@@ -353,11 +297,11 @@ void readFileToPicture(ifstream& file, vector<picture>& pictureList) {
 
     cout << "Loading All Records" << endl;
     cout << " . . . " << endl;
-    Sleep(1000);
+    Sleep(500);
     cout << " . . . " << endl;
-    Sleep(1000);
+    Sleep(500);
     cout << " . . . " << endl;
-    Sleep(1000);
+    Sleep(500);
     cout << "Records: "<< records << endl;
     cout << endl; cout << endl;
 
@@ -366,7 +310,7 @@ void readFileToPicture(ifstream& file, vector<picture>& pictureList) {
 
 
 
-void readFileToActor(ifstream& file, vector<actor>& actorList) {
+void readFileToActor(ifstream& file, vector<actor>& actorList) { // This reads CSV file into vector
 
     if (file.is_open()) { //Checks if the csv file opens or not
         cout <<"\n" << "Successfully Opened The Actor/Actress CSV file!" << endl << "\n";
@@ -418,11 +362,11 @@ void readFileToActor(ifstream& file, vector<actor>& actorList) {
 
     cout << "Loading All Records" << endl;
     cout << " . . . " << endl;
-    Sleep(1000);
+    Sleep(500);
     cout << " . . . " << endl;
-    Sleep(1000);
+    Sleep(500);
     cout << " . . . " << endl;
-    Sleep(1000);
+    Sleep(500);
     cout << "Records: "<< records << endl;
     cout << endl; cout << endl;
 
@@ -449,4 +393,123 @@ char getInput(char inputList[], int numberOfOptions) {			//takes in an array of 
     }
     cout << "Invalid input, please try again" << endl;	// if invalid input, try again
     return getInput(inputList, numberOfOptions);
+}
+
+
+void addActorToDatabase(vector<actor>& actorList) {
+    int tempYear;
+    string tempAward, tempName, tempFilm;
+    bool tempWinner;
+    cout << "Enter Year:" << endl;
+    cin >> tempYear;
+    cout << "Enter Award:" << endl;
+    cin >> tempAward;
+    cout << "Enter Winner:" << endl;
+    cin >> tempWinner;
+    cout << "Enter Name:" << endl;
+    cin >> tempName;
+    cout << "Enter Film:" << endl;
+    cin >> tempFilm;
+
+    actor tempActor(tempYear, tempAward, tempWinner, tempName, tempFilm);
+    actorList.push_back(tempActor);
+
+    cout << "Record added to the Actor/Actress database!" << endl;
+    cout << tempActor.getYear() << "\t" << tempActor.getAward() << "\t" << tempActor.getWinner() << "\t" << tempActor.getName() << "\t" << tempActor.getFilm() << endl;
+}
+
+void displayActorDatabase(vector<actor> actorList) { // CHANGED TO SAY YES OR NO FOR WINNER!! CHANGED FORMATTING
+    cout << "Year\tAward\t\t\t\tWinner\t\tName\t\t\tFilm" << endl;
+    for (actor elem : actorList) {
+        cout << "YEAR: " << elem.getYear() << endl;
+        cout << "AWARD: " << elem.getAward() << endl;
+        cout << "WINNER: ";
+        if(elem.getWinner() == 1){
+            string tempWinner;
+            tempWinner = "YES";
+            cout << tempWinner << endl;
+        } else {
+            string tempWinner2;
+            tempWinner2 = "NO";
+            cout << tempWinner2 << endl;
+        }
+        cout << "NAME: " << elem.getName() << endl;
+        cout << "FILM: " << elem.getFilm() << endl;
+        cout << "--------------------------------------------------------------------------------------------------------"<<endl;
+        cout << "--------------------------------------------------------------------------------------------------------"<<endl;
+        cout << endl;
+
+    }
+    cout << endl;
+}
+
+void displayPictureDatabase(vector<picture> pictureList) {
+   for(picture elem : pictureList) {
+       cout << "NAME: " << elem.getName() << endl;
+       cout << "YEAR: " << elem.getYear() << endl;
+       if(elem.getNominations() == 0) {
+           cout << "NOMINATIONS: NONE" << endl;
+       } else {
+           cout << "NOMINATIONS: " << elem.getNominations() << endl;
+       }
+       cout << "NOMINATIONS: " << elem.getNominations() << endl;
+       cout << "RATING: " << elem.getRating() << endl;
+       cout << "DURATION: " << elem.getDuration() << endl;
+       cout << "GENRE1: " << elem.getGenre1() << endl;
+       cout << "GENRE2: " << elem.getGenre2() << endl;
+       cout << "RELEASE: " << elem.getRelease() << endl;
+       if(elem.getMetacritic() == 0) {
+           cout << "METACRITIC: NONE" << endl;
+       } else {
+           cout << "METACRITIC: " << elem.getMetacritic() << endl;
+       }
+       cout << "SYNOPSIS: " << elem.getSynopsis() << endl;
+       cout << "--------------------------------------------------------------------------------------------------------"<<endl;
+       cout << "--------------------------------------------------------------------------------------------------------"<<endl;
+       cout << endl;
+   }
+}
+void sortActorDatabase(vector<actor>& actorList) {
+    char sortcategory, sortorder;
+    char categoryInputs[] = { 'y', 'a', 'w', 'n', 'f' };
+    char adInputs[] = { 'a', 'd' };
+
+
+    cout << "What category would you like to sort by?" << endl;
+    sortcategory = getInput(categoryInputs, 5);
+
+    cout << "Ascending or descending?" << endl;
+    sortorder = getInput(adInputs, 2);
+
+
+    //sort(actorList.begin(), actorList.end());
+
+    if (sortorder == 'a')
+    {
+        if (sortcategory == 'y')
+            sort(actorList.begin(), actorList.end(), sortActorYearAscending);
+        else if (sortcategory == 'a')
+            sort(actorList.begin(), actorList.end(), sortActorAwardAscending);
+        else if (sortcategory == 'w')
+            sort(actorList.begin(), actorList.end(), sortActorWinnerAscending);
+        else if (sortcategory == 'n')
+            sort(actorList.begin(), actorList.end(), sortActorNameAscending);
+        else if (sortcategory == 'f')
+            sort(actorList.begin(), actorList.end(), sortActorFilmAscending);
+    }
+    else if (sortorder == 'd')
+    {
+        if (sortcategory == 'y')
+            sort(actorList.begin(), actorList.end(), sortActorYearDescending);
+        else if (sortcategory == 'a')
+            sort(actorList.begin(), actorList.end(), sortActorAwardDescending);
+        else if (sortcategory == 'w')
+            sort(actorList.begin(), actorList.end(), sortActorWinnerDescending);
+        else if (sortcategory == 'n')
+            sort(actorList.begin(), actorList.end(), sortActorNameDescending);
+        else if (sortcategory == 'f')
+            sort(actorList.begin(), actorList.end(), sortActorFilmDescending);
+    }
+
+    cout << "Database sorted!" << endl;
 }
