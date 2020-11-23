@@ -1,10 +1,17 @@
+#ifdef _WIN32        //sleep function for windows
+#include <Windows.h> // used for sleep function for windows
+#else
+#include <unistd.h>  // sleep function for linux
+#endif
+
+
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <vector>
 #include <sstream>
-#include <windows.h>
 #include <algorithm>
+#include <exception>
 #include "actor.h"
 #include "picture.h"
 #include "sortfunctions.h"
@@ -99,17 +106,18 @@ int main()
 {
     system("color a");
     //ELIAS FILE
-    //ifstream actorFile(R"(C:\ClionProjects\MovieDatabaseProject\MovieDatabaseProject\actor-actress.csv)");
-    //ifstream pictureFile(R"(C:\ClionProjects\MovieDatabaseProject\MovieDatabaseProject\pictures.csv)");
+    ifstream actorFile(R"(C:\ClionProjects\MovieDatabaseProject\MovieDatabaseProject\actor-actress.csv)");
+    ifstream pictureFile(R"(C:\ClionProjects\MovieDatabaseProject\MovieDatabaseProject\pictures.csv)");
     //SEBASTIAN FILE
-    ifstream actorFile(R"(C:\Users\sebba\source\repos\MovieDatabaseProject\MovieDatabaseProject\actor-actress.csv)");
-    ifstream pictureFile(R"(C:\Users\sebba\source\repos\MovieDatabaseProject\MovieDatabaseProject\pictures.csv)");
+    //ifstream actorFile(R"(C:\Users\sebba\source\repos\MovieDatabaseProject\MovieDatabaseProject\actor-actress.csv)");
+    //ifstream pictureFile(R"(C:\Users\sebba\source\repos\MovieDatabaseProject\MovieDatabaseProject\pictures.csv)");
+
 
     vector<actor> actorList; //vector for actor/actress data
     vector<picture> pictureList; // vector for picture data
 
 
-    readFileToPicture(pictureFile, pictureList); // Elias needs to finnish this function
+
 
 
     char input;
@@ -181,6 +189,7 @@ int main()
         case 'p':                           
             do
             {
+                readFileToPicture(pictureFile, pictureList); // reads in picture database when user choses to search it
                 cout << endl << "------------------\nPictures Database\n------------------" << endl;
 
                 cout << "What action would you like to perform?" << endl;
@@ -207,66 +216,141 @@ int main()
 }
 
 
+bool isNumerical(const string& str){ //function to check if string value is a number
+    for(char c : str)
+        if(!isdigit(c))
+            return false;
+
+    return str.empty() == false;
+}
 
 
-void readFileToPicture(ifstream& file, vector<picture>& pictureList) {   /*   *** FUNCTION GIVING STOI ERROR***
+void readFileToPicture(ifstream& file, vector<picture>& pictureList) {
+
     if (file.is_open()) { //Checks if the csv file opens or not
-        cout <<"\n" << "Successfully Opened The Actor/Actress CSV file!" << endl << "\n";
+        cout <<"\n" << "Successfully Opened The Pictures CSV File!" << endl << "\n";
     } else {
-        cout <<"\n" << "Error Opening Actor/Actress CSV file" << endl << "\n";
+        cout <<"\n" << "Error Opening Pictures CSV file" << endl << "\n";
         cout << "\n" << "Please Make Sure CSV File Path Is Correct" << endl << "\n";
         exit(0);
     }
-    string header, name, year, nominations, rating, duration, genre1, genre2, release, metacritic, synopsis;
+    string header, name, year, nominations, rating, duration, genre1, genre2, release, metacritic, synopsis, line;
     int records = 0;
-    getline(file, header);
+    getline(file, header); // gets first line
+
     while (file.good()) {
         picture pictureInstance; //picture instance is to feed into vector
 
-        getline(file,name,',');
-        pictureInstance.setName(name);
 
-        getline(file,year,',');
-        int yearConverted;
-        yearConverted = stoi(year); //converts the string to int type
-        pictureInstance.setYear(yearConverted);
 
-        getline(file,nominations,',');
-        int nominationsConverted;
-        nominationsConverted = stoi(nominations); //converts the string to int type
-        pictureInstance.setNominations(nominationsConverted);
+        getline(file,line); // gets ENTIRE line
 
-        getline(file,rating,',');
-        double ratingConverted;
-        ratingConverted = stod(rating); //converts the string to int type
-        pictureInstance.setRating(ratingConverted);
+        stringstream ss(line); // place entire line into a string stream
 
-        getline(file,duration,',');
-        int durationConverted;
-        durationConverted = stoi(duration); //converts the string to int type
-        pictureInstance.setDuration(durationConverted);
 
-        getline(file,genre1,',');
-        pictureInstance.setGenre1(genre1);
+        while(ss.good()) { // while string stream is not empty   This takes the line and seperates it by ','
+            getline(ss,name,',');
+            if (name.empty() || name == "-") {
+                name = "NONE";
+                pictureInstance.setName(name);
 
-        getline(file,genre2,',');
-        pictureInstance.setGenre2(genre2);
 
-        getline(file,release,',');
-        pictureInstance.setRelease(release);
+            }
+            else {
+                pictureInstance.setName(name);
 
-        getline(file,metacritic,',');
-        int metacriticConversion;
-        metacriticConversion = stoi(metacritic); //converts the string to int type
-        pictureInstance.setMetacritic(metacriticConversion);
+            }
+            getline(ss,year,',');
+            if(isNumerical(year)) {
+                int yearConverted = stoi(year);
+                pictureInstance.setYear(yearConverted);
 
-        getline(file,synopsis,',');
-        pictureInstance.setRelease(synopsis);
+            } else {
+                pictureInstance.setYear(0);
 
-        pictureList.push_back(pictureInstance);
-        records++;
+            }
+            getline(ss,nominations,',');
+
+            if(isNumerical(nominations)) {
+                int nominationsConverted = stoi(nominations);
+                pictureInstance.setNominations(nominationsConverted);
+            }
+            else {
+                pictureInstance.setNominations(0);
+            }
+
+            getline(ss,rating,',');
+
+            if(isNumerical(rating)) {
+                double ratingConverted = stod(rating);
+                pictureInstance.setRating(ratingConverted);
+            }
+            else {
+                pictureInstance.setRating(0.0);
+            }
+            getline(ss,duration,',');
+            if(isNumerical(duration)) {
+                int durationConverted = stoi(duration);
+                pictureInstance.setDuration(durationConverted);
+            }
+            else {
+                pictureInstance.setDuration(0);
+            }
+            getline(ss,genre1,',');
+            if (genre1.empty() || genre1 == "-") {
+                genre1 = "NONE";
+                pictureInstance.setGenre1(genre1);
+            }
+            else {
+                pictureInstance.setGenre1(genre1);
+            }
+            getline(ss,genre2,',');
+            if (genre2.empty() || genre2 == "-") {
+                genre2 = "NONE";
+                pictureInstance.setGenre2(genre2);
+            }
+            else {
+                pictureInstance.setGenre2(genre2);
+            }
+
+            getline(ss,release,',');
+            if (release.empty() || release == "-") {
+                release = "NONE";
+                pictureInstance.setRelease(release);
+            }
+            else {
+                pictureInstance.setRelease(release);
+            }
+
+            getline(ss,metacritic,',');
+            if(isNumerical(metacritic)) {
+                int metacriticConversion = stoi(metacritic);
+                pictureInstance.setMetacritic(metacriticConversion);
+            }
+            else {
+                pictureInstance.setMetacritic(0);
+            }
+            getline(ss,synopsis,',');
+            if (synopsis.empty() || synopsis == "-") {
+                synopsis = "NONE";
+                pictureInstance.setSynopsis(synopsis);
+            }
+            else {
+                pictureInstance.setSynopsis(synopsis);
+
+                pictureList.push_back(pictureInstance);
+                records++;
+            }
+
+        }
+
+
+
+
+
 
     }
+
     cout << "Loading All Records" << endl;
     cout << " . . . " << endl;
     Sleep(1000);
@@ -277,7 +361,7 @@ void readFileToPicture(ifstream& file, vector<picture>& pictureList) {   /*   **
     cout << "Records: "<< records << endl;
     cout << endl; cout << endl;
 
-*/
+
 }
 
 
@@ -301,6 +385,7 @@ void readFileToActor(ifstream& file, vector<actor>& actorList) {
         actor actorInstance;  // actor instance is made to set string hold values to
 
         getline(file, year, ','); // gets year from csv
+
         int yearConverted;
         yearConverted = stoi(year); //converts the string to int type
         actorInstance.setYear(yearConverted); // sets the converted string into object instance
