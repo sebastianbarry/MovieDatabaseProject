@@ -43,7 +43,7 @@ int main()
 
     //ELIAS LENOVO LAPTOP FILE
     ifstream actorFile(R"(C:\Users\elipe\source\repos\sebastianbarry\MovieDatabaseProject\MovieDatabaseProject\actor-actress.csv)");
-    ifstream pictureFile(R"(C:\Users\elipe\source\repos\sebastianbarry\MovieDatabaseProject\MovieDatabaseProject\picture.csv)");
+    ifstream pictureFile(R"(C:\Users\elipe\source\repos\sebastianbarry\MovieDatabaseProject\MovieDatabaseProject\pictures.csv)");
     //ELIAS FILE
    // ifstream actorFile(R"(C:\ClionProjects\MovieDatabaseProject\MovieDatabaseProject\actor-actress.csv)");
    // ifstream pictureFile(R"(C:\ClionProjects\MovieDatabaseProject\MovieDatabaseProject\pictures.csv)");
@@ -136,19 +136,19 @@ int main()
                 cout << "View\tSearch\tSort\tAdd\t\t[Exit]" << endl;
                 input = getInput(actionInputs, 4);
 
+                
+
+                switch(input) {
+                    case 'v':
+                        displayPictureDatabase(pictureList);
+                        break;
+                    default:
+                        throw "Unexpected input";
+                        break;
+                }
+
                 cout << "Would you like to go to the main menu?" << endl;
                 input = getInput(ynInputs, 2);
-
-       //         switch(input) {
-       //             case 'v':
-       //                 displayPictureDatabase(pictureList);
-       //                 break;
-        //            default:
-         //               throw "Unexpected input";
-          //              break;
-          //      }
-
-
             } while (input == 'n');
             break;
         default:
@@ -447,7 +447,7 @@ void displayActorDatabase(vector<actor> actorList) { // CHANGED TO SAY YES OR NO
     cout << endl;
 }
 
-void displayPictureDatabase(vector<picture> pictureList) {
+void displayPictureDatabase(vector<picture> pictureList) { // THIS DISPLAYS THE LAST ELEMENT IN VECTOR TWICE!!!! NEED TO FIX!!!
    for(picture elem : pictureList) {
        cout << "NAME: " << elem.getName() << endl;
        cout << "YEAR: " << elem.getYear() << endl;
@@ -456,7 +456,7 @@ void displayPictureDatabase(vector<picture> pictureList) {
        } else {
            cout << "NOMINATIONS: " << elem.getNominations() << endl;
        }
-       cout << "NOMINATIONS: " << elem.getNominations() << endl;
+      
        cout << "RATING: " << elem.getRating() << endl;
        cout << "DURATION: " << elem.getDuration() << endl;
        cout << "GENRE1: " << elem.getGenre1() << endl;
