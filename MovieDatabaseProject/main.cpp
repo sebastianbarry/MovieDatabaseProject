@@ -12,6 +12,7 @@
 #include <sstream>
 #include <algorithm>
 #include <exception>
+#include <locale>
 #include "actor.h"
 #include "picture.h"
 #include "sortfunctions.h"
@@ -30,6 +31,10 @@ void addActorToDatabase(vector<actor>& actorList);
 
 void displayActorDatabase(vector<actor> actorList);
 
+void searchActorDatabase(vector<actor>& actorList);
+
+void modifyActor(vector<actor>& actorList, actor modify);
+
 void displayPictureDatabase(vector<picture> pictureList);
 
 void sortActorDatabase(vector<actor>& actorList);
@@ -42,14 +47,14 @@ int main()
     system("color a");
 
     //ELIAS LENOVO LAPTOP FILE
-    ifstream actorFile(R"(C:\Users\elipe\source\repos\sebastianbarry\MovieDatabaseProject\MovieDatabaseProject\actor-actress.csv)");
-    ifstream pictureFile(R"(C:\Users\elipe\source\repos\sebastianbarry\MovieDatabaseProject\MovieDatabaseProject\pictures.csv)");
+    //ifstream actorFile(R"(C:\Users\elipe\source\repos\sebastianbarry\MovieDatabaseProject\MovieDatabaseProject\actor-actress.csv)");
+    //ifstream pictureFile(R"(C:\Users\elipe\source\repos\sebastianbarry\MovieDatabaseProject\MovieDatabaseProject\pictures.csv)");
     //ELIAS FILE
    // ifstream actorFile(R"(C:\ClionProjects\MovieDatabaseProject\MovieDatabaseProject\actor-actress.csv)");
    // ifstream pictureFile(R"(C:\ClionProjects\MovieDatabaseProject\MovieDatabaseProject\pictures.csv)");
     //SEBASTIAN FILE
-    //ifstream actorFile(R"(C:\Users\sebba\source\repos\MovieDatabaseProject\MovieDatabaseProject\actor-actress.csv)");
-    //ifstream pictureFile(R"(C:\Users\sebba\source\repos\MovieDatabaseProject\MovieDatabaseProject\pictures.csv)");
+    ifstream actorFile(R"(C:\Users\sebba\source\repos\MovieDatabaseProject\MovieDatabaseProject\actor-actress.csv)");
+    ifstream pictureFile(R"(C:\Users\sebba\source\repos\MovieDatabaseProject\MovieDatabaseProject\pictures.csv)");
 
 
     vector<actor> actorList; //vector for actor/actress data
@@ -60,7 +65,7 @@ int main()
 
 
     char input;
-    char dbInputs[] = { 'a', 'p' };
+    char dbInputs[] = { 'a', 'p', 'x' };
     char ynInputs[] = { 'y', 'n' };
     char actionInputs[] = { 'v', 's', 't', 'a', 'x' };
     do
@@ -71,97 +76,88 @@ int main()
         cin.get();
 
 
-        cout << "Which database (Actor or Pictures) would you like to access?" << endl;
-        input = getInput(dbInputs, 2);
+        cout << "Which database would you like to access?\nActors, Pictures, Exit:" << endl;
+        input = getInput(dbInputs, 3);
         switch (input)
         {
-// ACTORS DATABASE LOOP // ACTORS DATABASE LOOP // ACTORS DATABASE LOOP // ACTORS DATABASE LOOP // ACTORS DATABASE LOOP // ACTORS DATABASE LOOP // ACTORS DATABASE LOOP 
+            // ACTORS DATABASE LOOP // ACTORS DATABASE LOOP // ACTORS DATABASE LOOP // ACTORS DATABASE LOOP // ACTORS DATABASE LOOP // ACTORS DATABASE LOOP // ACTORS DATABASE LOOP 
         case 'a':
+            readFileToActor(actorFile, actorList); // reads in actor csv when they choose to search its database
+            cout << endl << "------------------\nActor/Actress Database\n------------------" << endl;
+
             do
             {
-                readFileToActor(actorFile, actorList); // reads in actor csv when they choose to search its database
-                cout << endl << "------------------\nActor/Actress Database\n------------------" << endl;
-
-                do
+                cout << "What action would you like to perform?\nView, Search, Sort, Add, Exit:" << endl;
+                input = getInput(actionInputs, 5);
+                switch (input)
                 {
-                    cout << "What action would you like to perform?" << endl;
-                    cout << "View\tSearch\tSort\tAdd\t\t[Exit]" << endl;
-                    input = getInput(actionInputs, 5);
-                    switch (input)
-                    {
-                                                                        // VIEW ACTORS ACTION
-                    case 'v':
-                        displayActorDatabase(actorList);
-                        break;
-                                                                        // SEARCH ACTORS ACTION
-                    case 's':
+                    // VIEW ACTORS ACTION
+                case 'v':
+                    displayActorDatabase(actorList);
+                    break;
+                    // SEARCH ACTORS ACTION
+                case 's':
+                    searchActorDatabase(actorList);
+                    break;
+                    // SORT ACTORS ACTION
+                case 't':
+                    sortActorDatabase(actorList);
+                    break;
+                    // ADD ACTORS ACTION
+                case 'a':
+                    cout << "Create an Actor/Actress record:" << endl;
+                    addActorToDatabase(actorList);
+                    break;
+                    // EXIT ACTORS ACTION
+                case 'x':
+                    break;
 
-                        break;
-                                                                        // SORT ACTORS ACTION
-                    case 't':
-                        sortActorDatabase(actorList);
-                        break;
-                                                                        // ADD ACTORS ACTION
-                    case 'a':
-                        cout << "Create an Actor/Actress record:" << endl;
-                        addActorToDatabase(actorList);
-                        break;
-                                                                        // EXIT ACTORS ACTION
-                    case 'x':
-                        break;
-                    default:
-                        throw "Unexpected input";
-                        break;
-                    }
-
-                    //cout << "What action would you like to perform?" << endl;
-                    //cout << "View\tSearch\tSort\tAdd\t\t[Exit]" << endl;
-                    //input = getinput(actionInputs, 5);
-                } while (input != 'x');
-                                                                        // END OF ACTORS ACTIONS 
-
-                cout << "Would you like to return to the main menu?" << endl;
-                input = getInput(ynInputs, 2);
-            } while (input == 'n');
+                default:
+                    throw "Unexpected input";
+                    break;
+                }
+            } while (input != 'x');
+            // END OF ACTORS ACTIONS 
             break;
-// PICTURES DATABASE LOOP // PICTURES DATABASE LOOP // PICTURES DATABASE LOOP // PICTURES DATABASE LOOP // PICTURES DATABASE LOOP // PICTURES DATABASE LOOP // PICTURES DATABASE LOOP 
-        case 'p':                           
+
+            // PICTURES DATABASE LOOP // PICTURES DATABASE LOOP // PICTURES DATABASE LOOP // PICTURES DATABASE LOOP // PICTURES DATABASE LOOP // PICTURES DATABASE LOOP // PICTURES DATABASE LOOP 
+        case 'p':
+            readFileToPicture(pictureFile, pictureList); // reads in picture database when user choses to search it
+
+            cout << endl << "------------------\nPictures Database\n------------------" << endl;
+
             do
             {
-                readFileToPicture(pictureFile, pictureList); // reads in picture database when user choses to search it
+                cout << "What action would you like to perform?\nView, Search, Sort, Add, Exit:" << endl;
+                input = getInput(actionInputs, 5);
 
-                cout << endl << "------------------\nPictures Database\n------------------" << endl;
-
-                cout << "What action would you like to perform?" << endl;
-                cout << "View\tSearch\tSort\tAdd\t\t[Exit]" << endl;
-                input = getInput(actionInputs, 4);
-
-                
-
-                switch(input) {
-                    case 'v':
-                        displayPictureDatabase(pictureList);
-                        break;
-                    default:
-                        throw "Unexpected input";
-                        break;
+                switch (input) {
+                case 'v':
+                    displayPictureDatabase(pictureList);
+                    break;
+                default:
+                    throw "Unexpected input";
+                    break;
                 }
-
-                cout << "Would you like to go to the main menu?" << endl;
-                input = getInput(ynInputs, 2);
-            } while (input == 'n');
+            } while (input != 'x');
+            // END OF PICTURES ACTIONS 
             break;
+
         default:
-            throw "Unexpected input";
             break;
         }
 // END OF LOOPS // END OF LOOPS // END OF LOOPS // END OF LOOPS // END OF LOOPS // END OF LOOPS // END OF LOOPS // END OF LOOPS // END OF LOOPS // END OF LOOPS 
 
-        cout << "Would you like to exit the program?" << endl;
-        input = getInput(ynInputs, 2);
-    } while (input == 'n');
+        cout << "Returning to the main menu . . ." << endl << endl << endl;
+        Sleep(500);
+        input = '-';
+
+        /*cout << "Would you like to exit the program?" << endl;
+        input = getInput(ynInputs, 2);*/
+    } while (input != 'x');
 
     cout << "Exiting program . . ." << endl;
+    Sleep(500);
     system("pause");
     return 0;
 }
@@ -479,7 +475,7 @@ void sortActorDatabase(vector<actor>& actorList) {
     char adInputs[] = { 'a', 'd' };
 
 
-    cout << "What category would you like to sort by?" << endl;
+    cout << "What category would you like to sort by?\nYear, Award, Winnder, Name, Film:" << endl;
     sortcategory = getInput(categoryInputs, 5);
 
     cout << "Ascending or descending?" << endl;
@@ -516,4 +512,234 @@ void sortActorDatabase(vector<actor>& actorList) {
     }
 
     cout << "Database sorted!" << endl;
+}
+
+void searchActorDatabase(vector<actor>& actorList) {
+    char ynInputs[] = { 'y', 'n' };
+    char categoryInputs[] = { 'y', 'n', 'f' };
+    char input;
+    vector<actor> searchedList, copyActorList;
+    string searchcriteria;
+
+    for (int i = 0; i < actorList.size(); i++)
+    {
+        searchedList.push_back(actorList.at(i));
+        copyActorList.push_back(actorList.at(i));
+    }
+
+
+    cout << "What category would you like to search by?\nYear, Name, Film:" << endl;
+    input = getInput(categoryInputs, 3);
+                                                                    // YEAR SEARCH
+    if (input == 'y')
+    {
+        int yearcriteria;
+        int lowestYear;
+        int highestYear;
+
+
+        sort(searchedList.begin(), searchedList.end(), sortActorYearAscending);
+        lowestYear = searchedList.front().getYear();
+        highestYear = searchedList.back().getYear();                                    //Find the bounds of the highest and lowest years for input checking later
+
+        do
+        {
+            cout << "Enter a valid year . . ." << endl;
+            cin >> searchcriteria;
+
+            yearcriteria = stoi(searchcriteria);
+        } while (yearcriteria < lowestYear || yearcriteria > highestYear);            //input checking
+
+        for (int i = 0; i < searchedList.size(); i++)
+        {
+            if (searchedList.at(i).getYear() != yearcriteria)
+            {
+                searchedList.erase(searchedList.begin() + i);               //remove the item at this position if it is not within the search criteria
+                i--;
+            }
+        }
+    }
+    else if (input == 'n')
+    {                                                               //NAME SEARCH
+        string namecriteria;
+
+
+        cout << "Enter a valid name . . ." << endl;
+        cin >> namecriteria;
+
+        transform(namecriteria.begin(), namecriteria.end(), namecriteria.begin(), tolower);
+
+        for (int i = 0; i < searchedList.size(); i++)
+        {
+            string compare = searchedList.at(i).getName();
+
+            transform(compare.begin(), compare.end(), compare.begin(), tolower);
+
+            if (compare.find(namecriteria) == string::npos)
+            {
+                searchedList.erase(searchedList.begin() + i);               //remove the item at this position if it is not within the search criteria
+                i--;
+            }
+        }
+    }
+    else if (input == 'f')
+    {                                                           //FILM SEARCH
+        string filmcriteria;
+
+
+        cout << "Enter a valid film name . . ." << endl;
+        cin >> filmcriteria;
+
+        transform(filmcriteria.begin(), filmcriteria.end(), filmcriteria.begin(), tolower);
+
+        for (int i = 0; i < searchedList.size(); i++)
+        {
+            string compare = searchedList.at(i).getFilm();
+
+            transform(compare.begin(), compare.end(), compare.begin(), tolower);
+
+            if (compare.find(filmcriteria) == string::npos)
+            {
+                searchedList.erase(searchedList.begin() + i);               //remove the item at this position if it is not within the search criteria
+                i--;
+            }
+        }
+    }
+
+
+
+    if (searchedList.size() == 0)
+    {
+        cout << "No actors exist with this film . . ." << endl;
+        searchedList = actorList;
+    }
+    else if (searchedList.size() == 1)                                  //specific search activated if only one entry found
+    {
+        displayActorDatabase(searchedList);
+        cout << "Specific search!\nWould you like to modify this entry?" << endl;
+        input = getInput(ynInputs, 2);
+            
+        if (input == 'y')
+        {
+            modifyActor(actorList, searchedList.at(0));
+        }
+
+        searchedList = actorList;
+    }
+    else
+        displayActorDatabase(searchedList);                 //display searched list
+
+
+
+    cout << "Would you like to perform another search?" << endl;
+    input = getInput(ynInputs, 2);
+
+
+
+    if (input == 'y')
+    {
+        if (searchedList.size() == actorList.size())
+            searchActorDatabase(searchedList);
+        else
+        {
+            cout << "Using previous search results?" << endl;
+            input = getInput(ynInputs, 2);
+
+            if (input == 'n')
+                searchedList = actorList;
+
+            searchActorDatabase(searchedList);
+        }   
+    }
+    else
+        return;
+
+}
+
+
+void modifyActor(vector<actor>& actorList, actor modify) {
+    char ynInputs[] = { 'y', 'n' };
+    char categoryInputs[] = { 'y', 'a', 'w', 'n', 'f', 'z', 'x'};
+    char input;
+
+    int actorListIndex;
+    
+    for (int i = 0; i < actorList.size(); i++)
+    {
+        if (actorList.at(i).getAward() == modify.getAward() &&
+            actorList.at(i).getFilm() == modify.getFilm() &&
+            actorList.at(i).getName() == modify.getName() &&
+            actorList.at(i).getWinner() == modify.getWinner() &&
+            actorList.at(i).getYear() == modify.getYear())
+            actorListIndex = i;
+    }
+
+
+
+    cout << "What category would you like to edit?\nYear, Award, Winner, Name, Film, Remove, Exit:" << endl;
+    input = getInput(categoryInputs, 7);
+
+
+    if (input == 'y')
+    {
+        string rawinput;
+        int yearinput;
+        int lowestYear, highestYear;
+
+        sort(actorList.begin(), actorList.end(), sortActorYearAscending);
+        lowestYear = actorList.front().getYear();
+        highestYear = actorList.back().getYear();                                    //Find the bounds of the highest and lowest years for input checking later
+
+        do
+        {
+            cout << "Enter a valid year . . ." << endl;
+            cin >> rawinput;
+
+            yearinput = stoi(rawinput);
+        } while (yearinput < lowestYear || yearinput > highestYear);            //input checking
+
+
+
+        actorList.at(actorListIndex).setYear(yearinput);            //edit object in the original list
+    }
+    else if (input == 'a')
+    {
+
+    }
+    else if (input == 'w')
+    {
+
+    }
+    else if (input == 'n')
+    {
+
+    }
+    else if (input == 'f')
+    {
+
+    }
+    else if (input == 'z')
+    {
+        cout << "Are you sure you would like to delete this entry?" << endl;
+        input = getInput(ynInputs, 2);
+
+        if (input == 'y')
+        {
+            actorList.erase(actorList.begin() + actorListIndex);
+            cout << "Entry has been removed from the Actor database" << endl;
+        }
+        else
+            modifyActor(actorList, actorList.at(actorListIndex));
+        return;
+    }    
+
+    vector<actor> tempForDisplay;
+    tempForDisplay.push_back(actorList.at(actorListIndex));
+    displayActorDatabase(actorList);                                    //display edited entry
+
+    cout << "Would you like to edit this entry again?" << endl;
+    input = getInput(ynInputs, 2);
+
+    if (input == 'y')
+        modifyActor(actorList, actorList.at(actorListIndex));
 }
