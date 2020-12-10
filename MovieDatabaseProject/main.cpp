@@ -4,7 +4,7 @@
 #include <unistd.h>  // sleep function for linux
 #endif
 
-
+#include <bits/stdc++.h>
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -19,6 +19,9 @@
 
 using namespace std;
 
+void lowerCase (string& notFunAtAll);
+
+void capitalizeStringAgain (string& notFunAtAll2);
 
 char getInput(char inputList[], int numberOfOptions);
 
@@ -55,11 +58,11 @@ int main()
     //ifstream actorFile(R"(C:\Users\elipe\source\repos\sebastianbarry\MovieDatabaseProject\MovieDatabaseProject\actor-actress.csv)");
     //ifstream pictureFile(R"(C:\Users\elipe\source\repos\sebastianbarry\MovieDatabaseProject\MovieDatabaseProject\pictures.csv)");
     //ELIAS FILE
-   // ifstream actorFile(R"(C:\ClionProjects\MovieDatabaseProject\MovieDatabaseProject\actor-actress.csv)");
-   // ifstream pictureFile(R"(C:\ClionProjects\MovieDatabaseProject\MovieDatabaseProject\pictures.csv)");
+    ifstream actorFile(R"(C:\ClionProjects\MovieDatabaseProject\MovieDatabaseProject\actor-actress.csv)");
+    ifstream pictureFile(R"(C:\ClionProjects\MovieDatabaseProject\MovieDatabaseProject\pictures.csv)");
     //SEBASTIAN FILE
-    ifstream actorFile(R"(C:\Users\sebba\source\repos\MovieDatabaseProject\MovieDatabaseProject\actor-actress.csv)");
-    ifstream pictureFile(R"(C:\Users\sebba\source\repos\MovieDatabaseProject\MovieDatabaseProject\pictures.csv)");
+    //ifstream actorFile(R"(C:\Users\sebba\source\repos\MovieDatabaseProject\MovieDatabaseProject\actor-actress.csv)");
+   // ifstream pictureFile(R"(C:\Users\sebba\source\repos\MovieDatabaseProject\MovieDatabaseProject\pictures.csv)");
 
 
     vector<actor> actorList; //vector for actor/actress data
@@ -220,6 +223,15 @@ void readFileToActor(ifstream& file, vector<actor>& actorList) { // This reads C
     else {
         cout << "\n" << "Error Opening Actor/Actress CSV file" << endl << "\n";
         cout << "\n" << "Please Make Sure CSV File Path Is Correct" << endl << "\n";
+        cout << endl;
+        cerr << "Program Closing" << endl;
+        cout << " . . . " << endl;
+        Sleep(300);
+        cout << " . . . " << endl;
+        Sleep(300);
+        cout << " . . . " << endl;
+        Sleep(300);
+        cout << endl; cout << endl;
         exit(0);
     }
 
@@ -265,11 +277,11 @@ void readFileToActor(ifstream& file, vector<actor>& actorList) { // This reads C
 
     cout << "Loading All Records" << endl;
     cout << " . . . " << endl;
-    Sleep(500);
+    Sleep(300);
     cout << " . . . " << endl;
-    Sleep(500);
+    Sleep(300);
     cout << " . . . " << endl;
-    Sleep(500);
+    Sleep(300);
     cout << "Records: " << records << endl;
     cout << endl; cout << endl;
 
@@ -402,11 +414,11 @@ void readFileToPicture(ifstream& file, vector<picture>& pictureList) { // this r
 
     cout << "Loading All Records" << endl;
     cout << " . . . " << endl;
-    Sleep(500);
+    Sleep(300);
     cout << " . . . " << endl;
-    Sleep(500);
+    Sleep(300);
     cout << " . . . " << endl;
-    Sleep(500);
+    Sleep(300);
     cout << "Records: "<< records << endl;
     cout << endl; cout << endl;
 
@@ -414,7 +426,10 @@ void readFileToPicture(ifstream& file, vector<picture>& pictureList) { // this r
 }
 
 void displayActorDatabase(vector<actor> actorList) { // CHANGED TO SAY YES OR NO FOR WINNER!! CHANGED FORMATTING
-    cout << "Year\tAward\t\t\t\tWinner\t\tName\t\t\tFilm" << endl;
+
+    cout << "--------------------------------------------------------------------------------------------------------" << endl;
+    cout << "--------------------------------------------------------------------------------------------------------" << endl;
+
     for (actor elem : actorList) {
         cout << "YEAR: " << elem.getYear() << endl;
         cout << "AWARD: " << elem.getAward() << endl;
@@ -440,6 +455,10 @@ void displayActorDatabase(vector<actor> actorList) { // CHANGED TO SAY YES OR NO
 }
 
 void displayPictureDatabase(vector<picture> pictureList) { // THIS DISPLAYS THE LAST ELEMENT IN VECTOR TWICE!!!! NEED TO FIX!!!
+
+    cout << "--------------------------------------------------------------------------------------------------------" << endl;
+    cout << "--------------------------------------------------------------------------------------------------------" << endl;
+
     for (picture elem : pictureList) {
         cout << "NAME: " << elem.getName() << endl;
         cout << "YEAR: " << elem.getYear() << endl;
@@ -475,9 +494,23 @@ void searchActorDatabase(vector<actor>& actorList) {
     vector<actor> searchedList, copyActorList;
     string searchcriteria;
 
+    string tempStringConverter;
+
     for (int i = 0; i < actorList.size(); i++)
     {
         searchedList.push_back(actorList.at(i));
+
+
+        tempStringConverter = searchedList[i].getName();
+        lowerCase(tempStringConverter); // passed string into function that lowercases it.
+        searchedList[i].setName(tempStringConverter);
+
+
+        tempStringConverter = searchedList[i].getFilm();
+        lowerCase(tempStringConverter); // passed string into function that lowercases it.
+        searchedList[i].setFilm(tempStringConverter);
+
+
         copyActorList.push_back(actorList.at(i));
     }
 
@@ -521,13 +554,15 @@ void searchActorDatabase(vector<actor>& actorList) {
         cout << "Enter a valid name . . ." << endl;
         cin >> namecriteria;
 
-        transform(namecriteria.begin(), namecriteria.end(), namecriteria.begin(), tolower);
+        lowerCase(namecriteria); // changes user input to lowercase to allow us to compare
+
+    //    transform(namecriteria.begin(), namecriteria.end(), namecriteria.begin(), tolower);
 
         for (int i = 0; i < searchedList.size(); i++)
         {
             string compare = searchedList.at(i).getName();
 
-            transform(compare.begin(), compare.end(), compare.begin(), tolower);
+     //       transform(compare.begin(), compare.end(), compare.begin(), tolower);
 
             if (compare.find(namecriteria) == string::npos)
             {
@@ -544,13 +579,15 @@ void searchActorDatabase(vector<actor>& actorList) {
         cout << "Enter a valid film name . . ." << endl;
         cin >> filmcriteria;
 
-        transform(filmcriteria.begin(), filmcriteria.end(), filmcriteria.begin(), tolower);
+        lowerCase(filmcriteria); // changes user input to lower case to allow us to compare
+
+     //   transform(filmcriteria.begin(), filmcriteria.end(), filmcriteria.begin(), tolower);
 
         for (int i = 0; i < searchedList.size(); i++)
         {
             string compare = searchedList.at(i).getFilm();
 
-            transform(compare.begin(), compare.end(), compare.begin(), tolower);
+        //    transform(compare.begin(), compare.end(), compare.begin(), tolower);
 
             if (compare.find(filmcriteria) == string::npos)
             {
@@ -581,6 +618,21 @@ void searchActorDatabase(vector<actor>& actorList) {
         searchedList = actorList;
     }
     else
+
+
+        for(int i = 0; i < searchedList.size(); i++) { // this loop makes string capital again
+
+            tempStringConverter = searchedList[i].getName();
+            capitalizeStringAgain(tempStringConverter); // passed string into function that capitalized it.
+            searchedList[i].setName(tempStringConverter);
+
+
+            tempStringConverter = searchedList[i].getFilm();
+            capitalizeStringAgain(tempStringConverter); // passed string into function that capitalized it.
+            searchedList[i].setFilm(tempStringConverter);
+
+        }
+        cout << endl;
         displayActorDatabase(searchedList);                 //display searched list
 
 
@@ -804,4 +856,21 @@ void addPictureToDatabase(vector<picture>& pictureList) {
 
     cout << "Record added to the Picture database!" << endl;
     displayPictureDatabase(tempDisplay);
+}
+
+void lowerCase (string& notFunAtAll) { // this converts strings to lower case
+    for(unsigned int i = 0; i <notFunAtAll.length(); i++) {
+        notFunAtAll[i] = tolower(notFunAtAll[i]); // iterates through string size and sets each index to lowercase
+    }
+}
+
+void capitalizeStringAgain (string& notFunAtAll2) { // this converts the first letter of each word to capital
+    for(unsigned int i = 0; i < notFunAtAll2.length(); i++) {
+        if(i == 0) {
+            notFunAtAll2[i] = toupper(notFunAtAll2[i]);
+        }
+        if(notFunAtAll2[i] == ' ') {
+            notFunAtAll2[i+1] = toupper(notFunAtAll2[i+1]);
+        }
+    }
 }
