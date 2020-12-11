@@ -19,6 +19,7 @@
 
 using namespace std;
 
+
 void lowerCase (string& notFunAtAll);
 
 void capitalizeStringAgain (string& notFunAtAll2);
@@ -60,27 +61,27 @@ int main()
 {
     system("color a");
 
-
     const char* actorFilePath;
     const char* pictureFilePath;
+
     //ELIAS LENOVO LAPTOP FILE
-    //ifstream actorFile(R"(C:\Users\elipe\source\repos\sebastianbarry\MovieDatabaseProject\MovieDatabaseProject\actor-actress.csv)");
-    //ifstream pictureFile(R"(C:\Users\elipe\source\repos\sebastianbarry\MovieDatabaseProject\MovieDatabaseProject\pictures.csv)");
+    //actorFilePath = R"(C:\Users\elipe\source\repos\sebastianbarry\MovieDatabaseProject\MovieDatabaseProject\actor-actress.csv)";
+    //pictureFilePath = (R"(C:\Users\elipe\source\repos\sebastianbarry\MovieDatabaseProject\MovieDatabaseProject\pictures.csv)";
+
     //ELIAS FILE
-    //ifstream actorFile(R"(C:\ClionProjects\MovieDatabaseProject\MovieDatabaseProject\actor-actress.csv)");
-    //ifstream pictureFile(R"(C:\ClionProjects\MovieDatabaseProject\MovieDatabaseProject\pictures.csv)");
+    actorFilePath = R"(C:\ClionProjects\MovieDatabaseProject\MovieDatabaseProject\actor-actress.csv)";
+    pictureFilePath = R"(C:\ClionProjects\MovieDatabaseProject\MovieDatabaseProject\pictures.csv)";
+
     //SEBASTIAN FILE
-    actorFilePath = R"(C:\Users\sebba\source\repos\MovieDatabaseProject\MovieDatabaseProject\actor-actress.csv)";
-    pictureFilePath = R"(C:\Users\sebba\source\repos\MovieDatabaseProject\MovieDatabaseProject\pictures.csv)";
+    //actorFilePath = R"(C:\Users\sebba\source\repos\MovieDatabaseProject\MovieDatabaseProject\actor-actress.csv)";
+    //pictureFilePath = R"(C:\Users\sebba\source\repos\MovieDatabaseProject\MovieDatabaseProject\pictures.csv)";
 
     ifstream actorFile(actorFilePath);
     ifstream pictureFile(pictureFilePath);
 
 
-
     vector<actor> actorList; //vector for actor/actress data
     vector<picture> pictureList; // vector for picture data
-
 
 
 
@@ -529,7 +530,10 @@ void displayPictureDatabase(vector<picture> pictureList) { // THIS DISPLAYS THE 
         cout << endl;
     }
 }
-
+void searchPictureDatabase(vector<picture>& pictureList) {
+    char ynInputs[] = { 'y', 'n'};
+    char categoryInputs[] = {'a', 'b', 'c','d', 'e', 'f'};
+}
 void searchActorDatabase(vector<actor>& actorList, vector<actor>& originalActorList) {
     char ynInputs[] = { 'y', 'n' };
     char categoryInputs[] = { 'y', 'n', 'f' };
