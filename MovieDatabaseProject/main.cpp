@@ -368,7 +368,7 @@ void readFileToPicture(ifstream& file, vector<picture>& pictureList) { // this r
         stringstream ss(line); // place entire line into a string stream
 
 
-        while(ss.good()) { // while string stream is not empty   This takes the line and seperates it by ','
+         // while string stream is not empty   This takes the line and seperates it by ','
             getline(ss,name,',');
             if (name.empty() || name == "-") {
                 name = "NONE";
@@ -457,7 +457,7 @@ void readFileToPicture(ifstream& file, vector<picture>& pictureList) { // this r
 
                 pictureList.push_back(pictureInstance);
                 records++;
-            }
+
 
         }
 
