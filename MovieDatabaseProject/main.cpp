@@ -726,15 +726,15 @@ void searchPictureDatabase(vector<picture>& pictureList) {
 
 
         sort(searchedList.begin(), searchedList.end(),sortPictureRatingAscending); // sorts the list in ascending order from year
-        lowestRating = searchedList.front().getNominations();
-        highestRating = searchedList.back().getNominations();                                    //Find the bounds of the highest and lowest years for input checking later
+        lowestRating = searchedList.front().getRating();
+        highestRating = searchedList.back().getRating();                                    //Find the bounds of the highest and lowest years for input checking later
 
         do {
             cout << "Enter a valid Rating Number . . ." << endl;
             cin >> searchcriteria;
 
             ratingcriteria = stod(searchcriteria);
-        } while (ratingcriteria < lowestRating ||ratingcriteria > ratingcriteria);            //input checking
+        } while (ratingcriteria < lowestRating ||ratingcriteria > highestRating);            //input checking
 
         for (int i = 0; i < searchedList.size(); i++) {
             if (searchedList.at(i).getRating() != ratingcriteria) {
@@ -749,8 +749,8 @@ void searchPictureDatabase(vector<picture>& pictureList) {
 
 
         sort(searchedList.begin(), searchedList.end(), sortPictureDurationAscending); // sorts the list in ascending order from year
-        lowestDuration = searchedList.front().getYear();
-        highestDuration = searchedList.back().getYear();                                    //Find the bounds of the highest and lowest years for input checking later
+        lowestDuration = searchedList.front().getDuration();
+        highestDuration = searchedList.back().getDuration();                                    //Find the bounds of the highest and lowest years for input checking later
 
         do
         {
@@ -851,12 +851,12 @@ void searchPictureDatabase(vector<picture>& pictureList) {
 
 
         sort(searchedList.begin(), searchedList.end(), sortPictureMetacriticAscending); // sorts the list in ascending order from year
-        lowestMetacritic = searchedList.front().getYear();
-        highestMetacritic = searchedList.back().getYear();                                    //Find the bounds of the highest and lowest years for input checking later
+        lowestMetacritic = searchedList.front().getMetacritic();
+        highestMetacritic = searchedList.back().getMetacritic();                                    //Find the bounds of the highest and lowest years for input checking later
 
         do
         {
-            cout << "Enter a valid year . . ." << endl;
+            cout << "Enter a valid Metacritic . . ." << endl;
             cin >> searchcriteria;
 
 
@@ -865,7 +865,7 @@ void searchPictureDatabase(vector<picture>& pictureList) {
 
         for (int i = 0; i < searchedList.size(); i++)
         {
-            if (searchedList.at(i).getYear() != metacriticcriteria)
+            if (searchedList.at(i).getMetacritic() != metacriticcriteria)
             {
                 searchedList.erase(searchedList.begin() + i);               //remove the item at this position if it is not within the search criteria
                 i--;
