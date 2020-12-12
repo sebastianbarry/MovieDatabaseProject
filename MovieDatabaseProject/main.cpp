@@ -1,3 +1,13 @@
+/****************
+ * Names: Sebastian Barry, Elias Hart
+ * Project: Data Structures & Program Design Final
+ * Description: This program reads in two CSV files and stores them in vectors.
+ * From here the user is allowed to search for the data base by field and also sort the database
+ * by ascending and descending order. They can also add and remove from the database.
+ * Due Date: 12/12/2020
+ ****************/
+
+
 #ifdef _WIN32        //sleep function for windows
 #include <Windows.h> // used for sleep function for windows
 #else
@@ -173,9 +183,11 @@ int main()
                     break;
                     // SEARCH PICTURES ACTION
                 case 's':
+                    searchPictureDatabase(pictureList);
                     break;
                     // SORT PICTURES ACTION
                 case 't':
+                    sortPictureDatabase(pictureList);
                     break;
                     // ADD PICTURES ACTION
                 case 'a':
@@ -532,8 +544,368 @@ void displayPictureDatabase(vector<picture> pictureList) { // THIS DISPLAYS THE 
 }
 void searchPictureDatabase(vector<picture>& pictureList) {
     char ynInputs[] = { 'y', 'n'};
-    char categoryInputs[] = {'a', 'b', 'c','d', 'e', 'f'};
+    char categoryInputs[] = {'a', 'b', 'c','d', 'e', 'f' , 'g' , 'h' , 'i' , 'j' };
+    char input;
+    vector<picture> searchedList, copyPictureList;
+    string searchcriteria;
+
+    string tempStringConverter;
+
+    for (int i = 0; i < pictureList.size(); i++)
+    {
+        searchedList.push_back(pictureList.at(i));
+
+
+        tempStringConverter = searchedList[i].getName();
+        lowerCase(tempStringConverter); // passed string into function that lowercases it.
+        searchedList[i].setName(tempStringConverter);
+
+
+        tempStringConverter = searchedList[i].getGenre1();
+        lowerCase(tempStringConverter); // passed string into function that lowercases it.
+        searchedList[i].setGenre1(tempStringConverter);
+
+        tempStringConverter = searchedList[i].getGenre2();
+        lowerCase(tempStringConverter); // passed string into function that lowercases it.
+        searchedList[i].setGenre2(tempStringConverter);
+
+        tempStringConverter = searchedList[i].getRelease();
+        lowerCase(tempStringConverter); // passed string into function that lowercases it.
+        searchedList[i].setRelease(tempStringConverter);
+
+        tempStringConverter = searchedList[i].getSynopsis();
+        lowerCase(tempStringConverter); // passed string into function that lowercases it.
+        searchedList[i].setSynopsis(tempStringConverter);
+
+
+        copyPictureList.push_back(pictureList.at(i));
+    }
+
+    cout << "What category would you like to search by?\n (a) Name\n(b) Year\n(c) Nominations\n(d) Rating\n(e) Duration\n(f) Genre1\n(g) Genre2\n(h) Release\n(i) Metacritic\n(j) Synopsis\n" << endl;
+    input = getInput(categoryInputs, 10);
+
+    if(input == 'a') {//NAME//NAME//NAME//NAME//NAME
+
+        string namecriteria;
+
+
+        cout << "Enter a valid name . . ." << endl;
+        cin >> namecriteria;
+
+        lowerCase(namecriteria); // changes user input to lowercase to allow us to compare
+
+        //    transform(namecriteria.begin(), namecriteria.end(), namecriteria.begin(), tolower);
+
+        for (int i = 0; i < searchedList.size(); i++)
+        {
+            string compare = searchedList.at(i).getName();
+
+            //       transform(compare.begin(), compare.end(), compare.begin(), tolower);
+
+            if (compare.find(namecriteria) == string::npos) // if string is not found
+            {
+                searchedList.erase(searchedList.begin() + i);               //remove the item at this position if it is not within the search criteria
+                i--; // go back in index because we deleted one
+            }
+        }
+    } else if (input == 'b') { //YEAR//YEAR//YEAR//YEAR//YEAR//YEAR
+
+        int yearcriteria;
+        int lowestYear;
+        int highestYear;
+
+
+        sort(searchedList.begin(), searchedList.end(), sortPictureYearAscending); // sorts the list in ascending order from year
+        lowestYear = searchedList.front().getYear();
+        highestYear = searchedList.back().getYear();                                    //Find the bounds of the highest and lowest years for input checking later
+
+        do
+        {
+            cout << "Enter a valid year . . ." << endl;
+            cin >> searchcriteria;
+
+            yearcriteria = stoi(searchcriteria);
+        } while (yearcriteria < lowestYear || yearcriteria > highestYear);            //input checking
+
+        for (int i = 0; i < searchedList.size(); i++)
+        {
+            if (searchedList.at(i).getYear() != yearcriteria)
+            {
+                searchedList.erase(searchedList.begin() + i);               //remove the item at this position if it is not within the search criteria
+                i--;
+            }
+        }
+    } else if( input == 'c') { //NOMINATIONS//NOMINATIONS//NOMINATIONS//NOMINATIONS
+        int nominationcriteria;
+        int lowestNomination;
+        int highestNomination;
+
+
+        sort(searchedList.begin(), searchedList.end(),sortPictureNominationsAscending); // sorts the list in ascending order from year
+        lowestNomination = searchedList.front().getNominations();
+        highestNomination = searchedList.back().getNominations();                                    //Find the bounds of the highest and lowest years for input checking later
+
+        do {
+            cout << "Enter a valid Nominations Number . . ." << endl;
+            cin >> searchcriteria;
+
+            nominationcriteria = stoi(searchcriteria);
+        } while (nominationcriteria < lowestNomination ||nominationcriteria > highestNomination);            //input checking
+
+        for (int i = 0; i < searchedList.size(); i++) {
+            if (searchedList.at(i).getYear() != nominationcriteria) {
+                searchedList.erase(searchedList.begin() +i);               //remove the item at this position if it is not within the search criteria
+                i--;
+            }
+        }
+    } else if (input == 'd') { //RATING//RATING//RATING//RATING//RATING
+        double ratingcriteria;
+        double lowestRating;
+        double highestRating;
+
+
+        sort(searchedList.begin(), searchedList.end(),sortPictureRatingAscending); // sorts the list in ascending order from year
+        lowestRating = searchedList.front().getNominations();
+        highestRating = searchedList.back().getNominations();                                    //Find the bounds of the highest and lowest years for input checking later
+
+        do {
+            cout << "Enter a valid Nominations Number . . ." << endl;
+            cin >> searchcriteria;
+
+            ratingcriteria = stod(searchcriteria);
+        } while (ratingcriteria < lowestRating ||ratingcriteria > ratingcriteria);            //input checking
+
+        for (int i = 0; i < searchedList.size(); i++) {
+            if (searchedList.at(i).getRating() != ratingcriteria) {
+                searchedList.erase(searchedList.begin() +i);               //remove the item at this position if it is not within the search criteria
+                i--;
+            }
+        }
+    } else if (input == 'e') { //DURATION//DURATION//DURATION//DURATION//DURATION
+        int durationcriteria;
+        int lowestDuration;
+        int highestDuration;
+
+
+        sort(searchedList.begin(), searchedList.end(), sortPictureDurationAscending); // sorts the list in ascending order from year
+        lowestDuration = searchedList.front().getYear();
+        highestDuration = searchedList.back().getYear();                                    //Find the bounds of the highest and lowest years for input checking later
+
+        do
+        {
+            cout << "Enter a valid Duration . . ." << endl;
+            cin >> searchcriteria;
+
+            durationcriteria = stoi(searchcriteria);
+        } while (durationcriteria < lowestDuration || durationcriteria > highestDuration);            //input checking
+
+        for (int i = 0; i < searchedList.size(); i++)
+        {
+            if (searchedList.at(i).getYear() != durationcriteria)
+            {
+                searchedList.erase(searchedList.begin() + i);               //remove the item at this position if it is not within the search criteria
+                i--;
+            }
+        }
+    } else if (input == 'f') { //GENRE1//GENRE1//GENRE1//GENRE1//GENRE1
+        string namecriteria;
+
+
+        cout << "Enter a valid Genre1 . . ." << endl;
+        cin >> namecriteria;
+
+        lowerCase(namecriteria); // changes user input to lowercase to allow us to compare
+
+        //    transform(namecriteria.begin(), namecriteria.end(), namecriteria.begin(), tolower);
+
+        for (int i = 0; i < searchedList.size(); i++)
+        {
+            string compare = searchedList.at(i).getGenre1();
+
+            //       transform(compare.begin(), compare.end(), compare.begin(), tolower);
+
+            if (compare.find(namecriteria) == string::npos) // if string is not found
+            {
+                searchedList.erase(searchedList.begin() + i);               //remove the item at this position if it is not within the search criteria
+                i--; // go back in index because we deleted one
+            }
+        }
+    } else if(input == 'g') {//GENRE2//GENRE2//GENRE2//GENRE2//GENRE2//GENRE2
+        string namecriteria;
+
+
+        cout << "Enter a valid Genre2 . . ." << endl;
+        cin >> namecriteria;
+
+        lowerCase(namecriteria); // changes user input to lowercase to allow us to compare
+
+        //    transform(namecriteria.begin(), namecriteria.end(), namecriteria.begin(), tolower);
+
+        for (int i = 0; i < searchedList.size(); i++)
+        {
+            string compare = searchedList.at(i).getGenre2();
+
+            //       transform(compare.begin(), compare.end(), compare.begin(), tolower);
+
+            if (compare.find(namecriteria) == string::npos) // if string is not found
+            {
+                searchedList.erase(searchedList.begin() + i);               //remove the item at this position if it is not within the search criteria
+                i--; // go back in index because we deleted one
+            }
+        }
+    } else if(input == 'h') { //RELEASE//RELEASE//RELEASE//RELEASE//RELEASE//RELEASE
+        string namecriteria;
+
+
+        cout << "Enter a valid Release Month . . ." << endl;
+        cin >> namecriteria;
+
+        lowerCase(namecriteria); // changes user input to lowercase to allow us to compare
+
+        //    transform(namecriteria.begin(), namecriteria.end(), namecriteria.begin(), tolower);
+
+        for (int i = 0; i < searchedList.size(); i++)
+        {
+            string compare = searchedList.at(i).getRelease();
+
+            //       transform(compare.begin(), compare.end(), compare.begin(), tolower);
+
+            if (compare.find(namecriteria) == string::npos) // if string is not found
+            {
+                searchedList.erase(searchedList.begin() + i);               //remove the item at this position if it is not within the search criteria
+                i--; // go back in index because we deleted one
+            }
+        }
+    } else if(input == 'i') { //METACRITIC//METACRITIC//METACRITIC//METACRITIC//METACRITIC
+
+        int metacriticcriteria;
+        int lowestMetacritic;
+        int highestMetacritic;
+
+
+        sort(searchedList.begin(), searchedList.end(), sortPictureMetacriticAscending); // sorts the list in ascending order from year
+        lowestMetacritic = searchedList.front().getYear();
+        highestMetacritic = searchedList.back().getYear();                                    //Find the bounds of the highest and lowest years for input checking later
+
+        do
+        {
+            cout << "Enter a valid year . . ." << endl;
+            cin >> searchcriteria;
+
+            metacriticcriteria = stoi(searchcriteria);
+        } while (metacriticcriteria < lowestMetacritic || metacriticcriteria > highestMetacritic);            //input checking
+
+        for (int i = 0; i < searchedList.size(); i++)
+        {
+            if (searchedList.at(i).getYear() != metacriticcriteria)
+            {
+                searchedList.erase(searchedList.begin() + i);               //remove the item at this position if it is not within the search criteria
+                i--;
+            }
+        }
+    } else if(input == 'j') {
+        string namecriteria;
+
+
+        cout << "Enter a valid Synopsis . . ." << endl;
+        getline(cin, namecriteria);
+
+
+        lowerCase(namecriteria); // changes user input to lowercase to allow us to compare
+
+        //    transform(namecriteria.begin(), namecriteria.end(), namecriteria.begin(), tolower);
+
+        for (int i = 0; i < searchedList.size(); i++)
+        {
+            string compare = searchedList.at(i).getSynopsis();
+
+            //       transform(compare.begin(), compare.end(), compare.begin(), tolower);
+
+            if (compare.find(namecriteria) == string::npos) // if string is not found
+            {
+                searchedList.erase(searchedList.begin() + i);               //remove the item at this position if it is not within the search criteria
+                i--; // go back in index because we deleted one
+            }
+        }
+    }
+
+
+
+    if (searchedList.size() == 0)
+    {
+        cout << "No actors exist with this film . . ." << endl;
+        searchedList = pictureList;
+    }
+    else if (searchedList.size() == 1)                                  //specific search activated if only one entry found
+    {
+        displayPictureDatabase(searchedList);
+        cout << "Specific search!\nWould you like to modify this entry?" << endl;
+        input = getInput(ynInputs, 2);
+
+        if (input == 'y')
+        {
+            modifyPicture(copyPictureList, searchedList.at(0));
+        }
+
+        searchedList = pictureList;
+    }
+    else
+
+
+        for(int i = 0; i < searchedList.size(); i++) { // this loop makes string capital again
+
+            tempStringConverter = searchedList[i].getName();
+            capitalizeStringAgain(tempStringConverter); // passed string into function that capitalized it.
+            searchedList[i].setName(tempStringConverter);
+
+
+            tempStringConverter = searchedList[i].getGenre1();
+            capitalizeStringAgain(tempStringConverter); // passed string into function that capitalized it.
+            searchedList[i].setGenre1(tempStringConverter);
+
+            tempStringConverter = searchedList[i].getGenre2();
+            capitalizeStringAgain(tempStringConverter); // passed string into function that capitalized it.
+            searchedList[i].setGenre2(tempStringConverter);
+
+            tempStringConverter = searchedList[i].getRelease();
+            capitalizeStringAgain(tempStringConverter); // passed string into function that capitalized it.
+            searchedList[i].setRelease(tempStringConverter);
+
+            tempStringConverter = searchedList[i].getSynopsis();
+            capitalizeStringAgain(tempStringConverter); // passed string into function that capitalized it.
+            searchedList[i].setSynopsis(tempStringConverter);
+
+        }
+    cout << endl;
+    displayPictureDatabase(searchedList);                 //display searched list
+
+
+
+    cout << "Would you like to perform another search?" << endl;
+    input = getInput(ynInputs, 2);
+
+
+
+    if (input == 'y')
+    {
+        if (searchedList.size() == pictureList.size())
+            searchPictureDatabase(pictureList);
+        else
+        {
+            cout << "Using previous search results?" << endl;
+            input = getInput(ynInputs, 2);
+
+            if (input == 'n')
+                searchedList = pictureList;
+
+            searchPictureDatabase(pictureList);
+        }
+    }
+    else
+        return;
+
 }
+
 void searchActorDatabase(vector<actor>& actorList, vector<actor>& originalActorList) {
     char ynInputs[] = { 'y', 'n' };
     char categoryInputs[] = { 'y', 'n', 'f' };
@@ -716,7 +1088,7 @@ void modifyActor(vector<actor>& actorList, actor modify) {
 
     int actorListIndex;
 
-    for (int i = 0; i < actorList.size(); i++)
+    for (int i = 0; i < actorList.size(); i++)// This loops check every field in instance to make sure it matches
     {
         if (actorList.at(i).getAward() == modify.getAward() &&
             actorList.at(i).getFilm() == modify.getFilm() &&
@@ -736,7 +1108,7 @@ void modifyActor(vector<actor>& actorList, actor modify) {
         string rawinput;
         int yearinput;
 
-        cin.ignore(256, '\n');
+        cin.ignore(256, '\n'); //clear input buffer
 
         do
         {
@@ -813,6 +1185,269 @@ void modifyActor(vector<actor>& actorList, actor modify) {
 
     if (input == 'y')
         modifyActor(actorList, actorList.at(actorListIndex));
+}
+void modifyPicture(vector<picture>& pictureList, picture modify) {
+    char ynInputs[] = { 'y', 'n' };
+    char categoryInputs[] = {'a', 'b', 'c','d', 'e', 'f' , 'g' , 'h' , 'i' , 'j', 'k','l'};
+    char input;
+
+    int pictureListIndex;
+
+    for (int i = 0; i < pictureList.size(); i++) // This loops check every field in instance to make sure it matches
+    {
+        if (pictureList.at(i).getName() == modify.getName() &&
+                pictureList.at(i).getYear() == modify.getYear() &&
+                pictureList.at(i).getNominations() == modify.getNominations() &&
+                pictureList.at(i).getRating() == modify.getRating() &&
+                pictureList.at(i).getDuration() == modify.getDuration()&&
+                pictureList.at(i).getRating() == modify.getRating() &&
+                pictureList.at(i).getGenre1() == modify.getGenre1() &&
+                pictureList.at(i).getGenre2() == modify.getGenre2() &&
+                pictureList.at(i).getRelease() == modify.getRelease() &&
+                pictureList.at(i).getMetacritic() == modify.getMetacritic() &&
+                pictureList.at(i).getSynopsis() == modify.getSynopsis())
+            pictureListIndex = i;
+    }
+
+
+    cout << "What category would you like to Edit?\n (a) Name\n(b) Year\n(c) Nominations\n(d) Rating\n(e) Duration\n(f) Genre1\n(g) Genre2\n(h) Release\n(i) Metacritic\n(j) Synopsis\n" << endl;
+    cout << endl << "Or would you like to:\n(k) Delete\n(l) Exit\n" << endl;
+    input = getInput(categoryInputs, 12);
+
+    if (input == 'a')
+    {
+        string rawinput;
+        cout << "Enter an Name . . ." << endl;
+        cin.ignore(256, '\n');
+        getline(cin, rawinput);
+
+        pictureList.at(pictureListIndex).setName(rawinput);
+    }
+    else if (input == 'b')
+    {
+
+        string rawinput;
+        int yearinput;
+
+        cin.ignore(256, '\n'); //clear input buffer
+
+        do
+        {
+            cout << "Enter a valid year . . ." << endl;
+            getline(cin, rawinput);
+        } while (!checkNumber(rawinput));
+
+        yearinput = stoi(rawinput);
+
+
+        pictureList.at(pictureListIndex).setYear(yearinput);            //edit object in the original list
+    }
+    else if (input == 'c')
+    {
+
+        string rawinput;
+        int nominationsinput;
+
+        cin.ignore(256, '\n'); //clear input buffer
+
+        do
+        {
+            cout << "Enter a valid Nomination Number . . ." << endl;
+            getline(cin, rawinput);
+        } while (!checkNumber(rawinput));
+
+        nominationsinput = stoi(rawinput);
+
+
+        pictureList.at(pictureListIndex).setNominations(nominationsinput);            //edit object in the original list
+    }
+    else if (input == 'd')
+    {
+
+        string rawinput;
+        int ratingsinput;
+
+        cin.ignore(256, '\n'); //clear input buffer
+
+        do
+        {
+            cout << "Enter a valid Rating Number . . ." << endl;
+            getline(cin, rawinput);
+        } while (!checkNumber(rawinput));
+
+        ratingsinput = stod(rawinput);
+
+
+        pictureList.at(pictureListIndex).setRating(ratingsinput);            //edit object in the original list
+    }
+    else if (input == 'e')
+    {
+        string rawinput;
+        int durationinput;
+
+        cin.ignore(256, '\n'); //clear input buffer
+
+        do
+        {
+            cout << "Enter a valid Duration . . ." << endl;
+            getline(cin, rawinput);
+        } while (!checkNumber(rawinput));
+
+        durationinput = stod(rawinput);
+
+
+        pictureList.at(pictureListIndex).setDuration(durationinput);            //edit object in the original list
+    }
+    else if (input == 'f')
+    {
+        string rawinput;
+        cout << "Enter a Genre1 . . ." << endl;
+        cin.ignore(256, '\n');
+        getline(cin, rawinput);
+
+        pictureList.at(pictureListIndex).setGenre1(rawinput);
+    }
+    else if (input == 'g')
+    {
+        string rawinput;
+        cout << "Enter a genre2 . . ." << endl;
+        cin.ignore(256, '\n');
+        getline(cin, rawinput);
+
+        pictureList.at(pictureListIndex).setGenre2(rawinput);
+    }
+    else if (input == 'h')
+    {
+        string rawinput;
+        cout << "Enter a Release Month . . ." << endl;
+        cin.ignore(256, '\n');
+        getline(cin, rawinput);
+
+        pictureList.at(pictureListIndex).setRelease(rawinput);
+    }
+    else if (input == 'i')
+    {
+
+        string rawinput;
+        int durationinput;
+
+        cin.ignore(256, '\n'); //clear input buffer
+
+        do
+        {
+            cout << "Enter a valid Metacritic . . ." << endl;
+            getline(cin, rawinput);
+        } while (!checkNumber(rawinput));
+
+        durationinput = stod(rawinput);
+
+
+        pictureList.at(pictureListIndex).setMetacritic(durationinput);            //edit object in the original list
+    }
+    else if (input == 'j')
+    {
+        string rawinput;
+        cout << "Enter a Synopsis . . ." << endl;
+        cin.ignore(256, '\n');
+        getline(cin, rawinput);
+
+        pictureList.at(pictureListIndex).setSynopsis(rawinput);
+    }
+    else if (input == 'k')
+    {
+        cout << "Are you sure you would like to delete this entry?" << endl;
+        input = getInput(ynInputs, 2);
+
+        if (input == 'y')
+        {
+            pictureList.erase(pictureList.begin() + pictureListIndex);
+            cout << "Entry has been removed from the Actor database" << endl;
+        }
+        else
+            modifyPicture(pictureList, pictureList.at(pictureListIndex));
+        return;
+    }
+
+    vector<picture> tempForDisplay;
+    tempForDisplay.push_back(pictureList.at(pictureListIndex));
+    displayPictureDatabase(pictureList);                                    //display edited entry
+
+    cout << "Would you like to edit this entry again?" << endl;
+    input = getInput(ynInputs, 2);
+
+
+    if (input == 'y') {
+        modifyPicture(pictureList, pictureList.at(pictureListIndex));
+    } else {
+       cout << "Okay going back to picture database search" << endl;
+    }
+
+
+}
+void sortPictureDatabase(vector<picture>& pictureList) {
+    char sortcategory, sortorder;
+    char categoryInputs[] = { 'a', 'b', 'c','d', 'e', 'f' , 'g' , 'h' , 'i' , 'j' };
+    char adInputs[] = { 'a', 'd' };
+
+
+    cout << "What category would you like to sort by?\n (a) Name\n(b) Year\n(c) Nominations\n(d) Rating\n(e) Duration\n(f) Genre1\n(g) Genre2\n(h) Release\n(i) Metacritic\n(j) Synopsis\n" << endl;
+    sortcategory = getInput(categoryInputs, 10);
+
+    cout << "Ascending or descending?" << endl;
+    sortorder = getInput(adInputs, 2);
+
+
+    //sort(actorList.begin(), actorList.end());
+
+    if (sortorder == 'a')
+    {
+        if (sortcategory == 'a')
+            sort(pictureList.begin(), pictureList.end(), sortPictureNameAscending);
+        else if (sortcategory == 'b')
+            sort(pictureList.begin(), pictureList.end(), sortPictureYearAscending);
+        else if (sortcategory == 'c')
+            sort(pictureList.begin(), pictureList.end(), sortPictureNominationsAscending);
+        else if (sortcategory == 'd')
+            sort(pictureList.begin(), pictureList.end(), sortPictureRatingAscending);
+        else if (sortcategory == 'e')
+            sort(pictureList.begin(), pictureList.end(), sortPictureDurationAscending);
+        else if (sortcategory == 'f')
+            sort(pictureList.begin(), pictureList.end(), sortPictureGenre1Ascending);
+        else if (sortcategory == 'g')
+            sort(pictureList.begin(), pictureList.end(), sortPictureGenre2Ascending);
+        else if (sortcategory == 'h')
+            sort(pictureList.begin(), pictureList.end(), sortPictureReleaseAscending);
+        else if (sortcategory == 'i')
+            sort(pictureList.begin(), pictureList.end(), sortPictureMetacriticAscending);
+        else if (sortcategory == 'j')
+            sort(pictureList.begin(), pictureList.end(), sortPictureSynopsisAscending);
+
+    }
+    else if (sortorder == 'd')
+    {
+        if (sortcategory == 'a')
+            sort(pictureList.begin(), pictureList.end(), sortPictureNameDescending);
+        else if (sortcategory == 'b')
+            sort(pictureList.begin(), pictureList.end(), sortPictureYearDescending);
+        else if (sortcategory == 'c')
+            sort(pictureList.begin(), pictureList.end(), sortPictureNominationsDescending);
+        else if (sortcategory == 'd')
+            sort(pictureList.begin(), pictureList.end(), sortPictureRatingDescending);
+        else if (sortcategory == 'e')
+            sort(pictureList.begin(), pictureList.end(), sortPictureDurationDescending);
+        else if (sortcategory == 'f')
+            sort(pictureList.begin(), pictureList.end(), sortPictureGenre1Descending);
+        else if (sortcategory == 'g')
+            sort(pictureList.begin(), pictureList.end(), sortPictureGenre2Descending);
+        else if (sortcategory == 'h')
+            sort(pictureList.begin(), pictureList.end(), sortPictureReleaseDescending);
+        else if (sortcategory == 'i')
+            sort(pictureList.begin(), pictureList.end(), sortPictureMetacriticDescending);
+        else if (sortcategory == 'j')
+            sort(pictureList.begin(), pictureList.end(), sortPictureSyonopsisDescending);
+    }
+
+    cout << "Database sorted!" << endl;
 }
 
 void sortActorDatabase(vector<actor>& actorList) {
