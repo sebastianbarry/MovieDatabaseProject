@@ -468,6 +468,8 @@ void readFileToPicture(ifstream& file, vector<picture>& pictureList) { // this r
 
     }
 
+pictureList.erase(pictureList.begin() + records); // deletes the extra picture
+
     cout << "Loading All Records" << endl;
     cout << " . . . " << endl;
     Sleep(300);
