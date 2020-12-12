@@ -468,7 +468,7 @@ void readFileToPicture(ifstream& file, vector<picture>& pictureList) { // this r
 
     }
 
-pictureList.erase(pictureList.begin() + records); // deletes the extra picture
+pictureList.pop_back(); // deletes the extra picture
 
     cout << "Loading All Records" << endl;
     cout << " . . . " << endl;
