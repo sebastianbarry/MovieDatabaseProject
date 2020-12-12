@@ -29,6 +29,7 @@
 
 using namespace std;
 
+void intro();
 
 void lowerCase (string& notFunAtAll);
 
@@ -71,6 +72,7 @@ int main()
 {
     system("color a");
 
+
     const char* actorFilePath;
     const char* pictureFilePath;
 
@@ -102,7 +104,8 @@ int main()
     char actionInputs[] = { 'v', 's', 't', 'a', 'x' };
     do
     {
-        cout << "M O V I E // D A T A B A S E\n\tTeam Samurai" << endl << endl;
+        intro();
+
 
         cout << "Press ENTER to enter . . ." << endl;
         cin.get();
@@ -117,9 +120,11 @@ int main()
         case 'a':
             readFileToActor(actorFile, actorList); // reads in actor csv when they choose to search its database
             cout << endl << "------------------\nActor/Actress Database\n------------------" << endl;
+                cout << endl;
 
             do
             {
+                cout << endl;
                 cout << "What action would you like to perform?\nView, Search/Modify, Sort, Add, Exit/Save:" << endl;
                 input = getInput(actionInputs, 5);
                 switch (input)
@@ -170,9 +175,11 @@ int main()
             readFileToPicture(pictureFile, pictureList); // reads in picture database when user choses to search it
 
             cout << endl << "------------------\nPictures Database\n------------------" << endl;
+            cout << endl;
 
             do
             {
+                cout << endl;
                 cout << "What action would you like to perform?\nView, Search/Modify, Sort, Add, Exit/Save:" << endl;
                 input = getInput(actionInputs, 5);
 
@@ -484,11 +491,31 @@ pictureList.pop_back(); // deletes the extra picture
 }
 
 void displayActorDatabase(vector<actor> actorList) { // CHANGED TO SAY YES OR NO FOR WINNER!! CHANGED FORMATTING
+    int counter = 1;
 
-    cout << "--------------------------------------------------------------------------------------------------------" << endl;
-    cout << "--------------------------------------------------------------------------------------------------------" << endl;
+
+    cin.sync();
+    cout << endl << "DATABASE READY TO PRINT\nPLEASE PRESS ENTER TO PRINT";
+    cout <<endl;
+    cin.get();
+
+    cout << "Printing DataBase" << endl;
+    cout << " . . . " << endl;
+    Sleep(300);
+    cout << " . . . " << endl;
+    Sleep(300);
+    cout << " . . . " << endl;
+    Sleep(300);
+
+    cout << endl; cout << endl;
+
+
 
     for (actor elem : actorList) {
+        cout << "--------------------------------------------------------------------------------------------------------" << endl;
+        cout << "                                                "<<counter <<"                                          " << endl;
+        cout << "--------------------------------------------------------------------------------------------------------" << endl;
+        ++counter;
         cout << "YEAR: " << elem.getYear() << endl;
         cout << "AWARD: " << elem.getAward() << endl;
         cout << "WINNER: ";
@@ -504,20 +531,43 @@ void displayActorDatabase(vector<actor> actorList) { // CHANGED TO SAY YES OR NO
         }
         cout << "NAME: " << elem.getName() << endl;
         cout << "FILM: " << elem.getFilm() << endl;
-        cout << "--------------------------------------------------------------------------------------------------------" << endl;
-        cout << "--------------------------------------------------------------------------------------------------------" << endl;
         cout << endl;
 
     }
+    cout << "--------------------------------------------------------------------------------------------------------" << endl;
+    cout << "                                            End Of List                                                 " << endl;
+    cout << "--------------------------------------------------------------------------------------------------------" << endl;
     cout << endl;
 }
 
-void displayPictureDatabase(vector<picture> pictureList) { // THIS DISPLAYS THE LAST ELEMENT IN VECTOR TWICE!!!! NEED TO FIX!!!
+void displayPictureDatabase(vector<picture> pictureList) {
 
-    cout << "--------------------------------------------------------------------------------------------------------" << endl;
-    cout << "--------------------------------------------------------------------------------------------------------" << endl;
+
+    int counter = 1;
+
+    cin.sync();
+    cout << endl << "//DATABASE READY TO PRINT//\n\n   PRESS ENTER TO PRINT";
+    cout <<endl;
+    cin.get();
+
+
+    cout << "Printing DataBase" << endl;
+    cout << " . . . " << endl;
+    Sleep(300);
+    cout << " . . . " << endl;
+    Sleep(300);
+    cout << " . . . " << endl;
+    Sleep(300);
+
+    cout << endl; cout << endl;
+
+
 
     for (picture elem : pictureList) {
+        cout << "--------------------------------------------------------------------------------------------------------" << endl;
+        cout << "                                                "<<counter <<"                                          " << endl;
+        cout << "--------------------------------------------------------------------------------------------------------" << endl;
+        ++counter;
         cout << "NAME: " << elem.getName() << endl;
         cout << "YEAR: " << elem.getYear() << endl;
         if (elem.getNominations() == 0) {
@@ -539,10 +589,13 @@ void displayPictureDatabase(vector<picture> pictureList) { // THIS DISPLAYS THE 
             cout << "METACRITIC: " << elem.getMetacritic() << endl;
         }
         cout << "SYNOPSIS: " << elem.getSynopsis() << endl;
-        cout << "--------------------------------------------------------------------------------------------------------" << endl;
-        cout << "--------------------------------------------------------------------------------------------------------" << endl;
         cout << endl;
+
     }
+    cout << "--------------------------------------------------------------------------------------------------------" << endl;
+    cout << "                                             End Of List                                                " << endl;
+    cout << "--------------------------------------------------------------------------------------------------------" << endl;
+    cout << endl;
 }
 void searchPictureDatabase(vector<picture>& pictureList) {
     char ynInputs[] = { 'y', 'n'};
@@ -592,7 +645,11 @@ void searchPictureDatabase(vector<picture>& pictureList) {
 
 
         cout << "Enter a valid name . . ." << endl;
-        cin >> namecriteria;
+
+
+        cin.ignore();
+        getline(cin, namecriteria);
+
 
         lowerCase(namecriteria); // changes user input to lowercase to allow us to compare
 
@@ -651,11 +708,13 @@ void searchPictureDatabase(vector<picture>& pictureList) {
             cout << "Enter a valid Nominations Number . . ." << endl;
             cin >> searchcriteria;
 
+
+
             nominationcriteria = stoi(searchcriteria);
         } while (nominationcriteria < lowestNomination ||nominationcriteria > highestNomination);            //input checking
 
         for (int i = 0; i < searchedList.size(); i++) {
-            if (searchedList.at(i).getYear() != nominationcriteria) {
+            if (searchedList.at(i).getNominations() != nominationcriteria) {
                 searchedList.erase(searchedList.begin() +i);               //remove the item at this position if it is not within the search criteria
                 i--;
             }
@@ -671,7 +730,7 @@ void searchPictureDatabase(vector<picture>& pictureList) {
         highestRating = searchedList.back().getNominations();                                    //Find the bounds of the highest and lowest years for input checking later
 
         do {
-            cout << "Enter a valid Nominations Number . . ." << endl;
+            cout << "Enter a valid Rating Number . . ." << endl;
             cin >> searchcriteria;
 
             ratingcriteria = stod(searchcriteria);
@@ -696,6 +755,7 @@ void searchPictureDatabase(vector<picture>& pictureList) {
         do
         {
             cout << "Enter a valid Duration . . ." << endl;
+
             cin >> searchcriteria;
 
             durationcriteria = stoi(searchcriteria);
@@ -714,7 +774,8 @@ void searchPictureDatabase(vector<picture>& pictureList) {
 
 
         cout << "Enter a valid Genre1 . . ." << endl;
-        cin >> namecriteria;
+        cin.ignore();
+        getline(cin, namecriteria);
 
         lowerCase(namecriteria); // changes user input to lowercase to allow us to compare
 
@@ -737,7 +798,9 @@ void searchPictureDatabase(vector<picture>& pictureList) {
 
 
         cout << "Enter a valid Genre2 . . ." << endl;
-        cin >> namecriteria;
+
+        cin.ignore();
+        getline(cin, namecriteria);
 
         lowerCase(namecriteria); // changes user input to lowercase to allow us to compare
 
@@ -760,7 +823,9 @@ void searchPictureDatabase(vector<picture>& pictureList) {
 
 
         cout << "Enter a valid Release Month . . ." << endl;
-        cin >> namecriteria;
+
+        cin.ignore();
+        getline(cin, namecriteria);
 
         lowerCase(namecriteria); // changes user input to lowercase to allow us to compare
 
@@ -794,6 +859,7 @@ void searchPictureDatabase(vector<picture>& pictureList) {
             cout << "Enter a valid year . . ." << endl;
             cin >> searchcriteria;
 
+
             metacriticcriteria = stoi(searchcriteria);
         } while (metacriticcriteria < lowestMetacritic || metacriticcriteria > highestMetacritic);            //input checking
 
@@ -810,6 +876,7 @@ void searchPictureDatabase(vector<picture>& pictureList) {
 
 
         cout << "Enter a valid Synopsis . . ." << endl;
+        cin.ignore();
         getline(cin, namecriteria);
 
 
@@ -837,6 +904,7 @@ void searchPictureDatabase(vector<picture>& pictureList) {
     {
         cout << "No actors exist with this film . . ." << endl;
         searchedList = pictureList;
+        return;
     }
     else if (searchedList.size() == 1)                                  //specific search activated if only one entry found
     {
@@ -847,6 +915,8 @@ void searchPictureDatabase(vector<picture>& pictureList) {
         if (input == 'y')
         {
             modifyPicture(copyPictureList, searchedList.at(0));
+        } else if (input == 'n') {
+            return;
         }
 
         searchedList = pictureList;
@@ -973,7 +1043,8 @@ void searchActorDatabase(vector<actor>& actorList, vector<actor>& originalActorL
 
 
         cout << "Enter a valid name . . ." << endl;
-        cin >> namecriteria;
+        cin.ignore();
+        getline(cin, namecriteria);
 
         lowerCase(namecriteria); // changes user input to lowercase to allow us to compare
 
@@ -1022,18 +1093,24 @@ void searchActorDatabase(vector<actor>& actorList, vector<actor>& originalActorL
 
     if (searchedList.size() == 0)
     {
+        cout <<endl;
         cout << "No actors exist with this film . . ." << endl;
         searchedList = actorList;
+        return;
+
     }
     else if (searchedList.size() == 1)                                  //specific search activated if only one entry found
     {
         displayActorDatabase(searchedList);
+        cout <<endl;
         cout << "Specific search!\nWould you like to modify this entry?" << endl;
         input = getInput(ynInputs, 2);
 
         if (input == 'y')
         {
             modifyActor(copyActorList, searchedList.at(0));
+        } else if(input == 'n') {
+            return;
         }
 
         searchedList = actorList;
@@ -1101,6 +1178,7 @@ void modifyActor(vector<actor>& actorList, actor modify) {
     }
 
 
+    cout <<endl;
     cout << "What category would you like to edit?\nYear, Award, Winner, Name, Film, Remove, Exit:" << endl;
     input = getInput(categoryInputs, 7);
 
@@ -1212,6 +1290,7 @@ void modifyPicture(vector<picture>& pictureList, picture modify) {
     }
 
 
+    cout <<endl;
     cout << "What category would you like to Edit?\n (a) Name\n(b) Year\n(c) Nominations\n(d) Rating\n(e) Duration\n(f) Genre1\n(g) Genre2\n(h) Release\n(i) Metacritic\n(j) Synopsis\n" << endl;
     cout << endl << "Or would you like to:\n(k) Delete\n(l) Exit\n" << endl;
     input = getInput(categoryInputs, 12);
@@ -1392,6 +1471,7 @@ void sortPictureDatabase(vector<picture>& pictureList) {
     char adInputs[] = { 'a', 'd' };
 
 
+    cout <<endl;
     cout << "What category would you like to sort by?\n (a) Name\n(b) Year\n(c) Nominations\n(d) Rating\n(e) Duration\n(f) Genre1\n(g) Genre2\n(h) Release\n(i) Metacritic\n(j) Synopsis\n" << endl;
     sortcategory = getInput(categoryInputs, 10);
 
@@ -1458,7 +1538,8 @@ void sortActorDatabase(vector<actor>& actorList) {
     char adInputs[] = { 'a', 'd' };
 
 
-    cout << "What category would you like to sort by?\nYear, Award, Winnder, Name, Film:" << endl;
+    cout <<endl;
+    cout << "What category would you like to sort by?\nYear, Award, Winner, Name, Film:" << endl;
     sortcategory = getInput(categoryInputs, 5);
 
     cout << "Ascending or descending?" << endl;
@@ -1511,6 +1592,7 @@ void addActorToDatabase(vector<actor>& actorList) {
 
     do
     {
+        cout <<endl;
         cout << "Enter a valid year . . ." << endl;
         getline(cin, rawinput);
     } while (!checkNumber(rawinput));
@@ -1561,8 +1643,9 @@ void addPictureToDatabase(vector<picture>& pictureList) {
     string tempName, tempGenre1, tempGenre2, tempRelease, tempSynopsis;
     double tempRating;
 
+    cout <<endl;
     cout << "Enter Name:" << endl;
-    cout << tempName;
+    cin >> tempName;
     cout << "Enter Year:" << endl;
     cin >> tempYear;
     cout << "Enter Nominations:" << endl;
@@ -1659,4 +1742,17 @@ bool checkNumber(string str) {
         if (isdigit(str[i]) == false)
             return false;
     return true;
+}
+
+void intro() {
+    cerr << R"(
+  _____ _____    _    __  __      ____    _    __  __ _   _ ____      _    ___
+ |_   _| ____|  / \  |  \/  |    / ___|  / \  |  \/  | | | |  _ \    / \  |_ _|
+   | | |  _|   / _ \ | |\/| |    \___ \ / _ \ | |\/| | | | | |_) |  / _ \  | |
+   | | | |___ / ___ \| |  | |     ___) / ___ \| |  | | |_| |  _ <  / ___ \ | |
+   |_| |_____/_/   \_\_|  |_|    |____/_/   \_\_|  |_|\___/|_| \_\/_/   \_\___|)" << endl;
+
+    cout << endl;
+
+    cout << "\t\t\tM O V I E // D A T A B A S E\n\t\t\t\tTeam Samurai\n\t\t\t\t Created by: \n\t\t\tElias Hart and Sebastian Barry\n" << endl << endl;
 }

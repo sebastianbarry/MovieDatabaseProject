@@ -124,59 +124,59 @@ bool sortPictureYearDescending(picture lhs, picture rhs){
 }
 
 bool sortPictureNominationsAscending(picture lhs, picture rhs) {
-    if (lhs.getYear() == rhs.getYear())
+    if (lhs.getNominations() == rhs.getNominations())
     {
         return sortPictureNameAscending(lhs, rhs);
     }
-    return lhs.getYear() < rhs.getYear();
+    return lhs.getNominations() < rhs.getNominations();
 }
 bool sortPictureNominationsDescending(picture lhs, picture rhs) {
-    if (lhs.getYear() == rhs.getYear())
+    if (lhs.getNominations() == rhs.getNominations())
     {
         return sortPictureNameAscending(lhs, rhs);
     }
-    return lhs.getYear() > rhs.getYear();
+    return lhs.getNominations() > rhs.getNominations();
 }
 
 bool sortPictureRatingAscending(picture lhs, picture rhs){
-    if (lhs.getYear() == rhs.getYear())
+    if (lhs.getRating() == rhs.getRating())
     {
         return sortPictureNameAscending(lhs, rhs);
     }
-    return lhs.getYear() < rhs.getYear();
+    return lhs.getRating() < rhs.getRating();
 }
 bool sortPictureRatingDescending(picture lhs, picture rhs){
-    if (lhs.getYear() == rhs.getYear())
+    if (lhs.getRating() == rhs.getRating())
     {
         return sortPictureNameAscending(lhs, rhs);
     }
-    return lhs.getYear() > rhs.getYear();
+    return lhs.getRating() > rhs.getRating();
 }
 
 bool sortPictureDurationAscending(picture lhs, picture rhs){
-    if (lhs.getYear() == rhs.getYear())
+    if (lhs.getDuration() == rhs.getDuration())
     {
         return sortPictureNameAscending(lhs, rhs);
     }
-    return lhs.getYear() < rhs.getYear();
+    return lhs.getDuration() < rhs.getDuration();
 }
 bool sortPictureDurationDescending(picture lhs, picture rhs){
-    if (lhs.getYear() == rhs.getYear())
+    if (lhs.getDuration() == rhs.getDuration())
     {
         return sortPictureNameAscending(lhs, rhs);
     }
-    return lhs.getYear() > rhs.getYear();
+    return lhs.getDuration() > rhs.getDuration();
 }
 
 bool sortPictureGenre1Ascending(picture lhs, picture rhs){
-    int compare = lhs.getName().compare(rhs.getName());
+    int compare = lhs.getGenre1().compare(rhs.getGenre1());
     if (compare < 0)
         return true;
     else
         return false;
 }
 bool sortPictureGenre1Descending(picture lhs, picture rhs){
-    int compare = lhs.getName().compare(rhs.getName());
+    int compare = lhs.getGenre1().compare(rhs.getGenre1());
     if (compare > 0)
         return true;
     else
@@ -184,14 +184,14 @@ bool sortPictureGenre1Descending(picture lhs, picture rhs){
 }
 
 bool sortPictureGenre2Ascending(picture lhs, picture rhs){
-    int compare = lhs.getName().compare(rhs.getName());
+    int compare = lhs.getGenre2().compare(rhs.getGenre2());
     if (compare < 0)
         return true;
     else
         return false;
 }
 bool sortPictureGenre2Descending(picture lhs, picture rhs){
-    int compare = lhs.getName().compare(rhs.getName());
+    int compare = lhs.getGenre2().compare(rhs.getGenre2());
     if (compare > 0)
         return true;
     else
@@ -199,14 +199,14 @@ bool sortPictureGenre2Descending(picture lhs, picture rhs){
 }
 
 bool sortPictureReleaseAscending(picture lhs, picture rhs){
-    int compare = lhs.getName().compare(rhs.getName());
+    int compare = lhs.getRelease().compare(rhs.getRelease());
     if (compare < 0)
         return true;
     else
         return false;
 }
 bool sortPictureReleaseDescending(picture lhs, picture rhs){
-    int compare = lhs.getName().compare(rhs.getName());
+    int compare = lhs.getRelease().compare(rhs.getRelease());
     if (compare > 0)
         return true;
     else
@@ -214,29 +214,29 @@ bool sortPictureReleaseDescending(picture lhs, picture rhs){
 }
 
 bool sortPictureMetacriticAscending(picture lhs, picture rhs){
-    if (lhs.getYear() == rhs.getYear())
+    if (lhs.getMetacritic() == rhs.getMetacritic())
     {
         return sortPictureNameAscending(lhs, rhs);
     }
-    return lhs.getYear() < rhs.getYear();
+    return lhs.getMetacritic() < rhs.getMetacritic();
 }
 bool sortPictureMetacriticDescending(picture lhs, picture rhs){
-    if (lhs.getYear() == rhs.getYear())
+    if (lhs.getMetacritic() == rhs.getMetacritic())
     {
         return sortPictureNameAscending(lhs, rhs);
     }
-    return lhs.getYear() > rhs.getYear();
+    return lhs.getMetacritic() > rhs.getMetacritic();
 }
 
 bool sortPictureSynopsisAscending(picture lhs, picture rhs){
-    int compare = lhs.getName().compare(rhs.getName());
+    int compare = lhs.getSynopsis().compare(rhs.getSynopsis());
     if (compare < 0)
         return true;
     else
         return false;
 }
 bool sortPictureSyonopsisDescending(picture lhs, picture rhs){
-    int compare = lhs.getName().compare(rhs.getName());
+    int compare = lhs.getSynopsis().compare(rhs.getSynopsis());
     if (compare > 0)
         return true;
     else
