@@ -81,12 +81,12 @@ int main()
     //pictureFilePath = (R"(C:\Users\elipe\source\repos\sebastianbarry\MovieDatabaseProject\MovieDatabaseProject\pictures.csv)";
 
     //ELIAS FILE
-    actorFilePath = R"(C:\ClionProjects\MovieDatabaseProject\MovieDatabaseProject\actor-actress.csv)";
-    pictureFilePath = R"(C:\ClionProjects\MovieDatabaseProject\MovieDatabaseProject\pictures.csv)";
+    //actorFilePath = R"(C:\ClionProjects\MovieDatabaseProject\MovieDatabaseProject\actor-actress.csv)";
+    //pictureFilePath = R"(C:\ClionProjects\MovieDatabaseProject\MovieDatabaseProject\pictures.csv)";
 
     //SEBASTIAN FILE
-    //actorFilePath = R"(C:\Users\sebba\source\repos\MovieDatabaseProject\MovieDatabaseProject\actor-actress.csv)";
-    //pictureFilePath = R"(C:\Users\sebba\source\repos\MovieDatabaseProject\MovieDatabaseProject\pictures.csv)";
+    actorFilePath = R"(C:\Users\sebba\source\repos\MovieDatabaseProject\MovieDatabaseProject\actor-actress.csv)";
+    pictureFilePath = R"(C:\Users\sebba\source\repos\MovieDatabaseProject\MovieDatabaseProject\pictures.csv)";
 
     ifstream actorFile(actorFilePath);
     ifstream pictureFile(pictureFilePath);
@@ -1001,7 +1001,6 @@ void searchActorDatabase(vector<actor>& actorList, vector<actor>& originalActorL
         lowerCase(tempStringConverter); // passed string into function that lowercases it.
         searchedList[i].setFilm(tempStringConverter);
 
-
         copyActorList.push_back(actorList.at(i));
     }
 
@@ -1108,7 +1107,8 @@ void searchActorDatabase(vector<actor>& actorList, vector<actor>& originalActorL
 
         if (input == 'y')
         {
-            modifyActor(copyActorList, searchedList.at(0));
+            modifyActor(originalActorList, searchedList.at(0));
+            return;
         } else if(input == 'n') {
             return;
         }
@@ -1152,7 +1152,7 @@ void searchActorDatabase(vector<actor>& actorList, vector<actor>& originalActorL
             if (input == 'n')
                 searchedList = actorList;
 
-            searchActorDatabase(actorList, actorList);
+            searchActorDatabase(searchedList, actorList);
         }
     }
     else
@@ -1166,6 +1166,34 @@ void modifyActor(vector<actor>& actorList, actor modify) {
     char input;
 
     int actorListIndex;
+
+    string tempStringConverter;
+
+    for (int i = 0; i < actorList.size(); i++)
+    {
+
+        tempStringConverter = actorList[i].getName();
+        lowerCase(tempStringConverter); // passed string into function that lowercases it.
+        actorList[i].setName(tempStringConverter);
+
+
+        tempStringConverter = actorList[i].getFilm();
+        lowerCase(tempStringConverter); // passed string into function that lowercases it.
+        actorList[i].setFilm(tempStringConverter);
+    }
+
+    //string tempName = modify.getName();
+    //capitalizeStringAgain(tempName);
+    //modify.setName(tempName);
+
+    //string tempAward = modify.getAward();
+    //capitalizeStringAgain(tempAward);
+    //modify.setAward(tempAward);
+
+    //string tempFilm = modify.getFilm();
+    //capitalizeStringAgain(tempFilm);
+    //modify.setFilm(tempFilm);
+    //
 
     for (int i = 0; i < actorList.size(); i++)// This loops check every field in instance to make sure it matches
     {
@@ -1462,6 +1490,7 @@ void modifyPicture(vector<picture>& pictureList, picture modify) {
     } else {
        cout << "Okay going back to picture database search" << endl;
     }
+
 
 
 }
