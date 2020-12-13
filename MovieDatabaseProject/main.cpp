@@ -8,11 +8,6 @@
  ****************/
 
 
-#ifdef _WIN32        //sleep function for windows
-#include <Windows.h> // used for sleep function for windows
-#else
-#include <unistd.h>  // sleep function for linux
-#endif
 
 //#include <bits/stdc++.h>          according to google, we should never use this include as it is non portable - it gave me a compile time error
 #include <iostream>
@@ -26,6 +21,8 @@
 #include "actor.h"
 #include "picture.h"
 #include "sortfunctions.h"
+#include <chrono>
+#include <thread>
 
 using namespace std;
 
@@ -70,7 +67,7 @@ void savePictureDatabaseToCSV(vector<picture>& pictureList, const char* pictureF
 
 int main()
 {
-    system("color a");
+
 
 
     const char* actorFilePath;
@@ -81,12 +78,16 @@ int main()
     //pictureFilePath = (R"(C:\Users\elipe\source\repos\sebastianbarry\MovieDatabaseProject\MovieDatabaseProject\pictures.csv)";
 
     //ELIAS FILE
-    //actorFilePath = R"(C:\ClionProjects\MovieDatabaseProject\MovieDatabaseProject\actor-actress.csv)";
-    //pictureFilePath = R"(C:\ClionProjects\MovieDatabaseProject\MovieDatabaseProject\pictures.csv)";
+   // actorFilePath = R"(C:\ClionProjects\MovieDatabaseProject\MovieDatabaseProject\actor-actress.csv)";
+   // pictureFilePath = R"(C:\ClionProjects\MovieDatabaseProject\MovieDatabaseProject\pictures.csv)";
 
     //SEBASTIAN FILE
-    actorFilePath = R"(C:\Users\sebba\source\repos\MovieDatabaseProject\MovieDatabaseProject\actor-actress.csv)";
-    pictureFilePath = R"(C:\Users\sebba\source\repos\MovieDatabaseProject\MovieDatabaseProject\pictures.csv)";
+    //actorFilePath = R"(C:\Users\sebba\source\repos\MovieDatabaseProject\MovieDatabaseProject\actor-actress.csv)";
+    //pictureFilePath = R"(C:\Users\sebba\source\repos\MovieDatabaseProject\MovieDatabaseProject\pictures.csv)";
+
+    //CSE GRID
+    actorFilePath = ("actor-actress.csv");
+    pictureFilePath= ("picture.csv");
 
     ifstream actorFile(actorFilePath);
     ifstream pictureFile(pictureFilePath);
@@ -226,7 +227,6 @@ int main()
             
         case 'x':
             cout << "Exiting program . . ." << endl;
-            Sleep(500);
             system("pause");
             return 0;
 
@@ -239,13 +239,11 @@ int main()
 
 
         cout << "Returning to the main menu . . ." << endl << endl << endl;
-        Sleep(500);
         input = '-';
 
     } while (input != 'x');
 
     cout << "Exiting program . . ." << endl;
-    Sleep(500);
     system("pause");
     return 0;
 }
@@ -289,11 +287,11 @@ void readFileToActor(ifstream& file, vector<actor>& actorList) { // This reads C
         cout << endl;
         cerr << "Program Closing" << endl;
         cout << " . . . " << endl;
-        Sleep(300);
+
         cout << " . . . " << endl;
-        Sleep(300);
+
         cout << " . . . " << endl;
-        Sleep(300);
+
         cout << endl; cout << endl;
         exit(0);
     }
@@ -340,11 +338,11 @@ void readFileToActor(ifstream& file, vector<actor>& actorList) { // This reads C
 
     cout << "Loading All Records" << endl;
     cout << " . . . " << endl;
-    Sleep(300);
+
     cout << " . . . " << endl;
-    Sleep(300);
+
     cout << " . . . " << endl;
-    Sleep(300);
+
     cout << "Records: " << records << endl;
     cout << endl; cout << endl;
 
@@ -479,11 +477,11 @@ pictureList.pop_back(); // deletes the extra picture
 
     cout << "Loading All Records" << endl;
     cout << " . . . " << endl;
-    Sleep(300);
+
     cout << " . . . " << endl;
-    Sleep(300);
+
     cout << " . . . " << endl;
-    Sleep(300);
+
     cout << "Records: "<< records << endl;
     cout << endl; cout << endl;
 
@@ -501,11 +499,11 @@ void displayActorDatabase(vector<actor> actorList) { // CHANGED TO SAY YES OR NO
 
     cout << "Printing DataBase" << endl;
     cout << " . . . " << endl;
-    Sleep(300);
+
     cout << " . . . " << endl;
-    Sleep(300);
+
     cout << " . . . " << endl;
-    Sleep(300);
+
 
     cout << endl; cout << endl;
 
@@ -553,11 +551,11 @@ void displayPictureDatabase(vector<picture> pictureList) {
 
     cout << "Printing DataBase" << endl;
     cout << " . . . " << endl;
-    Sleep(300);
+
     cout << " . . . " << endl;
-    Sleep(300);
+
     cout << " . . . " << endl;
-    Sleep(300);
+
 
     cout << endl; cout << endl;
 
@@ -1001,6 +999,7 @@ void searchActorDatabase(vector<actor>& actorList, vector<actor>& originalActorL
         lowerCase(tempStringConverter); // passed string into function that lowercases it.
         searchedList[i].setFilm(tempStringConverter);
 
+
         copyActorList.push_back(actorList.at(i));
     }
 
@@ -1107,8 +1106,7 @@ void searchActorDatabase(vector<actor>& actorList, vector<actor>& originalActorL
 
         if (input == 'y')
         {
-            modifyActor(originalActorList, searchedList.at(0));
-            return;
+            modifyActor(copyActorList, searchedList.at(0));
         } else if(input == 'n') {
             return;
         }
@@ -1152,7 +1150,7 @@ void searchActorDatabase(vector<actor>& actorList, vector<actor>& originalActorL
             if (input == 'n')
                 searchedList = actorList;
 
-            searchActorDatabase(searchedList, actorList);
+            searchActorDatabase(actorList, actorList);
         }
     }
     else
@@ -1166,34 +1164,6 @@ void modifyActor(vector<actor>& actorList, actor modify) {
     char input;
 
     int actorListIndex;
-
-    string tempStringConverter;
-
-    for (int i = 0; i < actorList.size(); i++)
-    {
-
-        tempStringConverter = actorList[i].getName();
-        lowerCase(tempStringConverter); // passed string into function that lowercases it.
-        actorList[i].setName(tempStringConverter);
-
-
-        tempStringConverter = actorList[i].getFilm();
-        lowerCase(tempStringConverter); // passed string into function that lowercases it.
-        actorList[i].setFilm(tempStringConverter);
-    }
-
-    //string tempName = modify.getName();
-    //capitalizeStringAgain(tempName);
-    //modify.setName(tempName);
-
-    //string tempAward = modify.getAward();
-    //capitalizeStringAgain(tempAward);
-    //modify.setAward(tempAward);
-
-    //string tempFilm = modify.getFilm();
-    //capitalizeStringAgain(tempFilm);
-    //modify.setFilm(tempFilm);
-    //
 
     for (int i = 0; i < actorList.size(); i++)// This loops check every field in instance to make sure it matches
     {
@@ -1490,7 +1460,6 @@ void modifyPicture(vector<picture>& pictureList, picture modify) {
     } else {
        cout << "Okay going back to picture database search" << endl;
     }
-
 
 
 }
