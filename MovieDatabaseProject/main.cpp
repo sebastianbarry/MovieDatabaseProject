@@ -78,24 +78,29 @@ int main()
     //pictureFilePath = (R"(C:\Users\elipe\source\repos\sebastianbarry\MovieDatabaseProject\MovieDatabaseProject\pictures.csv)";
 
     //ELIAS FILE
-   // actorFilePath = R"(C:\ClionProjects\MovieDatabaseProject\MovieDatabaseProject\actor-actress.csv)";
-   // pictureFilePath = R"(C:\ClionProjects\MovieDatabaseProject\MovieDatabaseProject\pictures.csv)";
+    // actorFilePath = R"(C:\ClionProjects\MovieDatabaseProject\MovieDatabaseProject\actor-actress.csv)";
+    // pictureFilePath = R"(C:\ClionProjects\MovieDatabaseProject\MovieDatabaseProject\pictures.csv)";
 
     //SEBASTIAN FILE
     //actorFilePath = R"(C:\Users\sebba\source\repos\MovieDatabaseProject\MovieDatabaseProject\actor-actress.csv)";
     //pictureFilePath = R"(C:\Users\sebba\source\repos\MovieDatabaseProject\MovieDatabaseProject\pictures.csv)";
 
     //CSE GRID
-    actorFilePath = ("actor-actress.csv");
-    pictureFilePath= ("picture.csv");
+    ifstream actorFile;
+    ifstream pictureFile;
+    actorFile.open("actor-actress.csv");
+    pictureFile.open("pictures.csv");
 
-    ifstream actorFile(actorFilePath);
-    ifstream pictureFile(pictureFilePath);
+    actorFilePath = R"(actor-actress.csv)";
+    pictureFilePath = R"(picture.csv)";
 
+
+
+    //  ifstream actorFile(actorFilePath);
+    //ifstream pictureFile(pictureFilePath);
 
     vector<actor> actorList; //vector for actor/actress data
     vector<picture> pictureList; // vector for picture data
-
 
 
 
@@ -117,125 +122,126 @@ int main()
         char mode = input;
         switch (input)
         {
-            // ACTORS DATABASE LOOP // ACTORS DATABASE LOOP // ACTORS DATABASE LOOP // ACTORS DATABASE LOOP // ACTORS DATABASE LOOP // ACTORS DATABASE LOOP // ACTORS DATABASE LOOP 
-        case 'a':
-            readFileToActor(actorFile, actorList); // reads in actor csv when they choose to search its database
-            cout << endl << "------------------\nActor/Actress Database\n------------------" << endl;
+            // ACTORS DATABASE LOOP // ACTORS DATABASE LOOP // ACTORS DATABASE LOOP // ACTORS DATABASE LOOP // ACTORS DATABASE LOOP // ACTORS DATABASE LOOP // ACTORS DATABASE LOOP
+            case 'a':
+                cin.ignore();
+                readFileToActor(actorFile, actorList); // reads in actor csv when they choose to search its database
+                cout << endl << "------------------\nActor/Actress Database\n------------------" << endl;
                 cout << endl;
 
-            do
-            {
-                cout << endl;
-                cout << "What action would you like to perform?\nView, Search/Modify, Sort, Add, Exit/Save:" << endl;
-                input = getInput(actionInputs, 5);
-                switch (input)
+                do
                 {
-                    // VIEW ACTORS ACTION
-                case 'v':
-                    displayActorDatabase(actorList);
-                    break;
-                    // SEARCH ACTORS ACTION
-                case 's':
-                    searchActorDatabase(actorList, actorList);
-                    break;
-                    // SORT ACTORS ACTION
-                case 't':
-                    sortActorDatabase(actorList);
-                    break;
-                    // ADD ACTORS ACTION
-                case 'a':
-                    cout << "Create an Actor/Actress record:" << endl;
-                    addActorToDatabase(actorList);
-                    break;
-                    // EXIT ACTORS ACTION
-                case 'x':
-                    cout << "Would you like to save your changes?" << endl;
-                    input = getInput(ynInputs, 2);
-
-                    if (input == 'y')
+                    cout << endl;
+                    cout << "What action would you like to perform?\nView, Search/Modify, Sort, Add, Exit/Save:" << endl;
+                    input = getInput(actionInputs, 5);
+                    switch (input)
                     {
-                        saveActorDatabaseToCSV(actorList, actorFilePath);
+                        // VIEW ACTORS ACTION
+                        case 'v':
+                            displayActorDatabase(actorList);
+                            break;
+                            // SEARCH ACTORS ACTION
+                        case 's':
+                            searchActorDatabase(actorList, actorList);
+                            break;
+                            // SORT ACTORS ACTION
+                        case 't':
+                            sortActorDatabase(actorList);
+                            break;
+                            // ADD ACTORS ACTION
+                        case 'a':
+                            cout << "Create an Actor/Actress record:" << endl;
+                            addActorToDatabase(actorList);
+                            break;
+                            // EXIT ACTORS ACTION
+                        case 'x':
+                            cout << "Would you like to save your changes?" << endl;
+                            input = getInput(ynInputs, 2);
 
-                        cout << "\nChanges saved!\n\n" << endl;
+                            if (input == 'y')
+                            {
+                                saveActorDatabaseToCSV(actorList, actorFilePath);
+
+                                cout << "\nChanges saved!\n\n" << endl;
+                            }
+
+                            input = 'x';
+
+                            break;
+
+                        default:
+                            throw "Unexpected input";
+                            break;
                     }
-                    
-                    input = 'x';
+                } while (input != 'x');
+                // END OF ACTORS ACTIONS
+                break;
 
-                    break;
+                // PICTURES DATABASE LOOP // PICTURES DATABASE LOOP // PICTURES DATABASE LOOP // PICTURES DATABASE LOOP // PICTURES DATABASE LOOP // PICTURES DATABASE LOOP // PICTURES DATABASE LOOP
+            case 'p':
+                readFileToPicture(pictureFile, pictureList); // reads in picture database when user choses to search it
 
-                default:
-                    throw "Unexpected input";
-                    break;
-                }
-            } while (input != 'x');
-            // END OF ACTORS ACTIONS 
-            break;
-
-            // PICTURES DATABASE LOOP // PICTURES DATABASE LOOP // PICTURES DATABASE LOOP // PICTURES DATABASE LOOP // PICTURES DATABASE LOOP // PICTURES DATABASE LOOP // PICTURES DATABASE LOOP 
-        case 'p':
-            readFileToPicture(pictureFile, pictureList); // reads in picture database when user choses to search it
-
-            cout << endl << "------------------\nPictures Database\n------------------" << endl;
-            cout << endl;
-
-            do
-            {
+                cout << endl << "------------------\nPictures Database\n------------------" << endl;
                 cout << endl;
-                cout << "What action would you like to perform?\nView, Search/Modify, Sort, Add, Exit/Save:" << endl;
-                input = getInput(actionInputs, 5);
 
-                switch (input) {
-                    // VIEW PICTURES ACTION
-                case 'v':
-                    displayPictureDatabase(pictureList);
-                    break;
-                    // SEARCH PICTURES ACTION
-                case 's':
-                    searchPictureDatabase(pictureList);
-                    break;
-                    // SORT PICTURES ACTION
-                case 't':
-                    sortPictureDatabase(pictureList);
-                    break;
-                    // ADD PICTURES ACTION
-                case 'a':
-                    cout << "Create a Picture record:" << endl;
-                    addPictureToDatabase(pictureList);
-                    break;
-                    // EXIT/SAVE PICTURES ACTION
-                case 'x':
-                    cout << "Would you like to save your changes?" << endl;
-                    input = getInput(ynInputs, 2);
+                do
+                {
+                    cout << endl;
+                    cout << "What action would you like to perform?\nView, Search/Modify, Sort, Add, Exit/Save:" << endl;
+                    input = getInput(actionInputs, 5);
 
-                    if (input == 'y')
-                    {
-                            savePictureDatabaseToCSV(pictureList, pictureFilePath);
+                    switch (input) {
+                        // VIEW PICTURES ACTION
+                        case 'v':
+                            displayPictureDatabase(pictureList);
+                            break;
+                            // SEARCH PICTURES ACTION
+                        case 's':
+                            searchPictureDatabase(pictureList);
+                            break;
+                            // SORT PICTURES ACTION
+                        case 't':
+                            sortPictureDatabase(pictureList);
+                            break;
+                            // ADD PICTURES ACTION
+                        case 'a':
+                            cout << "Create a Picture record:" << endl;
+                            addPictureToDatabase(pictureList);
+                            break;
+                            // EXIT/SAVE PICTURES ACTION
+                        case 'x':
+                            cout << "Would you like to save your changes?" << endl;
+                            input = getInput(ynInputs, 2);
 
-                            cout << "\nChanges saved!\n\n" << endl;
+                            if (input == 'y')
+                            {
+                                savePictureDatabaseToCSV(pictureList, pictureFilePath);
+
+                                cout << "\nChanges saved!\n\n" << endl;
+                            }
+
+                            input = 'x';
+
+                            break;
+                        default:
+                            throw "Unexpected input";
+                            break;
                     }
+                } while (input != 'x');
+                // END OF PICTURES ACTIONS
+                break;
 
-                    input = 'x';
+            case 'x':
+                cout << "Exiting program . . ." << endl;
+                system("pause");
+                return 0;
 
-                    break;
-                default:
-                    throw "Unexpected input";
-                    break;
-                }
-            } while (input != 'x');
-            // END OF PICTURES ACTIONS 
-            break;
-            
-        case 'x':
-            cout << "Exiting program . . ." << endl;
-            system("pause");
-            return 0;
+                break;
 
-            break;
-
-        default:
-            break;
+            default:
+                break;
         }
-// END OF LOOPS // END OF LOOPS // END OF LOOPS // END OF LOOPS // END OF LOOPS // END OF LOOPS // END OF LOOPS // END OF LOOPS // END OF LOOPS // END OF LOOPS 
+// END OF LOOPS // END OF LOOPS // END OF LOOPS // END OF LOOPS // END OF LOOPS // END OF LOOPS // END OF LOOPS // END OF LOOPS // END OF LOOPS // END OF LOOPS
 
 
         cout << "Returning to the main menu . . ." << endl << endl << endl;
@@ -277,7 +283,6 @@ bool isNumerical(const string& str){ //function to check if string value is a nu
 }
 
 void readFileToActor(ifstream& file, vector<actor>& actorList) { // This reads CSV file into vector
-
     if (file.is_open()) { //Checks if the csv file opens or not
         cout << "\n" << "Successfully Opened The Actor/Actress CSV file!" << endl << "\n";
     }
@@ -373,95 +378,95 @@ void readFileToPicture(ifstream& file, vector<picture>& pictureList) { // this r
         stringstream ss(line); // place entire line into a string stream
 
 
-         // while string stream is not empty   This takes the line and seperates it by ','
-            getline(ss,name,',');
-            if (name.empty() || name == "-") {
-                name = "NONE";
-                pictureInstance.setName(name);
+        // while string stream is not empty   This takes the line and seperates it by ','
+        getline(ss,name,',');
+        if (name.empty() || name == "-") {
+            name = "NONE";
+            pictureInstance.setName(name);
 
 
-            }
-            else {
-                pictureInstance.setName(name);
+        }
+        else {
+            pictureInstance.setName(name);
 
-            }
-            getline(ss,year,',');
-            if(isNumerical(year)) {
-                int yearConverted = stoi(year);
-                pictureInstance.setYear(yearConverted);
+        }
+        getline(ss,year,',');
+        if(isNumerical(year)) {
+            int yearConverted = stoi(year);
+            pictureInstance.setYear(yearConverted);
 
-            } else {
-                pictureInstance.setYear(0);
+        } else {
+            pictureInstance.setYear(0);
 
-            }
-            getline(ss,nominations,',');
+        }
+        getline(ss,nominations,',');
 
-            if(isNumerical(nominations)) {
-                int nominationsConverted = stoi(nominations);
-                pictureInstance.setNominations(nominationsConverted);
-            }
-            else {
-                pictureInstance.setNominations(0);
-            }
+        if(isNumerical(nominations)) {
+            int nominationsConverted = stoi(nominations);
+            pictureInstance.setNominations(nominationsConverted);
+        }
+        else {
+            pictureInstance.setNominations(0);
+        }
 
-            getline(ss,rating,',');
+        getline(ss,rating,',');
 
 
-                double ratingConverted = stod(rating);
-                pictureInstance.setRating(ratingConverted);
+        double ratingConverted = stod(rating);
+        pictureInstance.setRating(ratingConverted);
 
-            getline(ss,duration,',');
-            if(isNumerical(duration)) {
-                int durationConverted = stoi(duration);
-                pictureInstance.setDuration(durationConverted);
-            }
-            else {
-                pictureInstance.setDuration(0);
-            }
-            getline(ss,genre1,',');
-            if (genre1.empty() || genre1 == "-") {
-                genre1 = "NONE";
-                pictureInstance.setGenre1(genre1);
-            }
-            else {
-                pictureInstance.setGenre1(genre1);
-            }
-            getline(ss,genre2,',');
-            if (genre2.empty() || genre2 == "-") {
-                genre2 = "NONE";
-                pictureInstance.setGenre2(genre2);
-            }
-            else {
-                pictureInstance.setGenre2(genre2);
-            }
+        getline(ss,duration,',');
+        if(isNumerical(duration)) {
+            int durationConverted = stoi(duration);
+            pictureInstance.setDuration(durationConverted);
+        }
+        else {
+            pictureInstance.setDuration(0);
+        }
+        getline(ss,genre1,',');
+        if (genre1.empty() || genre1 == "-") {
+            genre1 = "NONE";
+            pictureInstance.setGenre1(genre1);
+        }
+        else {
+            pictureInstance.setGenre1(genre1);
+        }
+        getline(ss,genre2,',');
+        if (genre2.empty() || genre2 == "-") {
+            genre2 = "NONE";
+            pictureInstance.setGenre2(genre2);
+        }
+        else {
+            pictureInstance.setGenre2(genre2);
+        }
 
-            getline(ss,release,',');
-            if (release.empty() || release == "-") {
-                release = "NONE";
-                pictureInstance.setRelease(release);
-            }
-            else {
-                pictureInstance.setRelease(release);
-            }
+        getline(ss,release,',');
+        if (release.empty() || release == "-") {
+            release = "NONE";
+            pictureInstance.setRelease(release);
+        }
+        else {
+            pictureInstance.setRelease(release);
+        }
 
-            getline(ss,metacritic,',');
-            if(isNumerical(metacritic)) {
-                int metacriticConversion = stoi(metacritic);
-                pictureInstance.setMetacritic(metacriticConversion);
-            }
-            else {
-                pictureInstance.setMetacritic(0);
-            }
-            getline(ss,synopsis,',');
-            if (synopsis.empty() || synopsis == "-") {
-                synopsis = "NONE";
-                pictureInstance.setSynopsis(synopsis);
-            }
-            else {
-                pictureInstance.setSynopsis(synopsis);
+        getline(ss,metacritic,',');
+        if(isNumerical(metacritic)) {
+            int metacriticConversion = stoi(metacritic);
+            pictureInstance.setMetacritic(metacriticConversion);
+        }
+        else {
+            pictureInstance.setMetacritic(0);
+        }
+        getline(ss,synopsis,',');
+        if (synopsis.empty() || synopsis == "-") {
+            synopsis = "NONE";
+            pictureInstance.setSynopsis(synopsis);
+        }
+        else {
+            pictureInstance.setSynopsis(synopsis);
 
-                pictureList.push_back(pictureInstance);
-                records++;
+            pictureList.push_back(pictureInstance);
+            records++;
 
 
         }
@@ -473,7 +478,7 @@ void readFileToPicture(ifstream& file, vector<picture>& pictureList) { // this r
 
     }
 
-pictureList.pop_back(); // deletes the extra picture
+    pictureList.pop_back(); // deletes the extra picture
 
     cout << "Loading All Records" << endl;
     cout << " . . . " << endl;
@@ -1046,13 +1051,13 @@ void searchActorDatabase(vector<actor>& actorList, vector<actor>& originalActorL
 
         lowerCase(namecriteria); // changes user input to lowercase to allow us to compare
 
-    //    transform(namecriteria.begin(), namecriteria.end(), namecriteria.begin(), tolower);
+        //    transform(namecriteria.begin(), namecriteria.end(), namecriteria.begin(), tolower);
 
         for (int i = 0; i < searchedList.size(); i++)
         {
             string compare = searchedList.at(i).getName();
 
-     //       transform(compare.begin(), compare.end(), compare.begin(), tolower);
+            //       transform(compare.begin(), compare.end(), compare.begin(), tolower);
 
             if (compare.find(namecriteria) == string::npos)
             {
@@ -1071,13 +1076,13 @@ void searchActorDatabase(vector<actor>& actorList, vector<actor>& originalActorL
 
         lowerCase(filmcriteria); // changes user input to lower case to allow us to compare
 
-     //   transform(filmcriteria.begin(), filmcriteria.end(), filmcriteria.begin(), tolower);
+        //   transform(filmcriteria.begin(), filmcriteria.end(), filmcriteria.begin(), tolower);
 
         for (int i = 0; i < searchedList.size(); i++)
         {
             string compare = searchedList.at(i).getFilm();
 
-        //    transform(compare.begin(), compare.end(), compare.begin(), tolower);
+            //    transform(compare.begin(), compare.end(), compare.begin(), tolower);
 
             if (compare.find(filmcriteria) == string::npos)
             {
@@ -1128,8 +1133,8 @@ void searchActorDatabase(vector<actor>& actorList, vector<actor>& originalActorL
             searchedList[i].setFilm(tempStringConverter);
 
         }
-        cout << endl;
-        displayActorDatabase(searchedList);                 //display searched list
+    cout << endl;
+    displayActorDatabase(searchedList);                 //display searched list
 
 
 
@@ -1274,16 +1279,16 @@ void modifyPicture(vector<picture>& pictureList, picture modify) {
     for (int i = 0; i < pictureList.size(); i++) // This loops check every field in instance to make sure it matches
     {
         if (pictureList.at(i).getName() == modify.getName() &&
-                pictureList.at(i).getYear() == modify.getYear() &&
-                pictureList.at(i).getNominations() == modify.getNominations() &&
-                pictureList.at(i).getRating() == modify.getRating() &&
-                pictureList.at(i).getDuration() == modify.getDuration()&&
-                pictureList.at(i).getRating() == modify.getRating() &&
-                pictureList.at(i).getGenre1() == modify.getGenre1() &&
-                pictureList.at(i).getGenre2() == modify.getGenre2() &&
-                pictureList.at(i).getRelease() == modify.getRelease() &&
-                pictureList.at(i).getMetacritic() == modify.getMetacritic() &&
-                pictureList.at(i).getSynopsis() == modify.getSynopsis())
+            pictureList.at(i).getYear() == modify.getYear() &&
+            pictureList.at(i).getNominations() == modify.getNominations() &&
+            pictureList.at(i).getRating() == modify.getRating() &&
+            pictureList.at(i).getDuration() == modify.getDuration()&&
+            pictureList.at(i).getRating() == modify.getRating() &&
+            pictureList.at(i).getGenre1() == modify.getGenre1() &&
+            pictureList.at(i).getGenre2() == modify.getGenre2() &&
+            pictureList.at(i).getRelease() == modify.getRelease() &&
+            pictureList.at(i).getMetacritic() == modify.getMetacritic() &&
+            pictureList.at(i).getSynopsis() == modify.getSynopsis())
             pictureListIndex = i;
     }
 
@@ -1458,7 +1463,7 @@ void modifyPicture(vector<picture>& pictureList, picture modify) {
     if (input == 'y') {
         modifyPicture(pictureList, pictureList.at(pictureListIndex));
     } else {
-       cout << "Okay going back to picture database search" << endl;
+        cout << "Okay going back to picture database search" << endl;
     }
 
 
@@ -1583,7 +1588,7 @@ void addActorToDatabase(vector<actor>& actorList) {
     string tempAward, tempName, tempFilm;
     bool tempWinner;
     string rawinput;
-                                                        //YEAR
+    //YEAR
     int yearinput;
 
     cin.ignore(256, '\n');
@@ -1597,11 +1602,11 @@ void addActorToDatabase(vector<actor>& actorList) {
 
     yearinput = stoi(rawinput);         //input checking
     tempYear = yearinput;
-                                                       //AWARD
+    //AWARD
     cout << "Enter an award . . ." << endl;
     getline(cin, rawinput);
     tempAward = rawinput;
-                                                        //WINNER
+    //WINNER
     bool winner;
     cout << "Did this actor win the award?" << endl;
     input = getInput(ynInputs, 2);
@@ -1612,11 +1617,11 @@ void addActorToDatabase(vector<actor>& actorList) {
     tempWinner = winner;
 
     cin.ignore(256, '\n');
-                                                        //NAME
+    //NAME
     cout << "Enter an actor name . . ." << endl;
     getline(cin, rawinput);
     tempName = rawinput;
-                                                        //FILM
+    //FILM
     cout << "Enter an film name . . ." << endl;
     getline(cin, rawinput);
     tempFilm = rawinput;
@@ -1685,11 +1690,11 @@ void saveActorDatabaseToCSV(vector<actor>& actorList, const char* actorFilePath)
     for (int i = 0; i < actorList.size(); i++)
     {
         newActorFile << actorList[i].getYear() << "," <<
-            actorList[i].getAward() << "," <<
-            actorList[i].getWinner() << "," <<
-            actorList[i].getName() << "," <<
-            actorList[i].getFilm() << "," <<
-            endl;
+                     actorList[i].getAward() << "," <<
+                     actorList[i].getWinner() << "," <<
+                     actorList[i].getName() << "," <<
+                     actorList[i].getFilm() << "," <<
+                     endl;
     }
 }
 
@@ -1705,16 +1710,16 @@ void savePictureDatabaseToCSV(vector<picture>& pictureList, const char* pictureF
     for (int i = 0; i < pictureList.size(); i++)
     {
         newPictureFile << pictureList[i].getName() << "," <<
-            pictureList[i].getYear() << "," <<
-            pictureList[i].getNominations() << "," <<
-            pictureList[i].getRating() << "," <<
-            pictureList[i].getDuration() << "," <<
-            pictureList[i].getGenre1() << "," <<
-            pictureList[i].getGenre2() << "," <<
-            pictureList[i].getRelease() << "," <<
-            pictureList[i].getMetacritic() << "," <<
-            pictureList[i].getSynopsis() << "," <<
-            endl;
+                       pictureList[i].getYear() << "," <<
+                       pictureList[i].getNominations() << "," <<
+                       pictureList[i].getRating() << "," <<
+                       pictureList[i].getDuration() << "," <<
+                       pictureList[i].getGenre1() << "," <<
+                       pictureList[i].getGenre2() << "," <<
+                       pictureList[i].getRelease() << "," <<
+                       pictureList[i].getMetacritic() << "," <<
+                       pictureList[i].getSynopsis() << "," <<
+                       endl;
     }
 }
 
